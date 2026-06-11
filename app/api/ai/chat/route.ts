@@ -90,9 +90,11 @@ async function* pipeline(req: NextRequest): AsyncGenerator<string> {
   // STEP C — User profile
   let userProfile: UserProfileSummary | null = null
   if (user) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sb = supabase as any
     const [{ data: academic }, { data: prefs }] = await Promise.all([
-      supabase.from('academic_profiles').select('*').eq('user_id', user.id).single(),
-      supabase.from('user_preferences').select('*').eq('user_id', user.id).single(),
+      sb.from('academic_profiles').select('*').eq('user_id', user.id).maybeSingle(),
+      sb.from('user_preferences').select('*').eq('user_id', user.id).maybeSingle(),
     ])
     if (academic) {
       const dob = academic.date_of_birth ? new Date(academic.date_of_birth) : null
@@ -260,27 +262,20 @@ async function fetchSessionHistory(supabase: SupabaseClient, sessionId: string) 
   return (data ?? []) as { role: 'user' | 'assistant' | 'system'; content: string }[]
 }
 
-async function storeMessages(
-  supabase: SupabaseClient,
-  userId: string | undefined,
-  sessionId: string | undefined,
-  userMessage: string,
-  assistantMessage: string,
-  intent: string,
-  modelUsed: string | null,
-  inputTokens: number,
-  outputTokens: number,
-) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function storeMessages(supabase: SupabaseClient, userId: string | undefined, sessionId: string | undefined, userMessage: string, assistantMessage: string, ..._rest: any[]) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sb = supabase as any
   let sid = sessionId
   if (!sid) {
-    const { data } = await supabase
+    const { data } = await sb
       .from('ai_sessions')
       .insert({ user_id: userId ?? null, session_type: 'navai_chat' })
       .select('id')
       .single()
     sid = data?.id
   } else {
-    await supabase
+    await sb
       .from('ai_sessions')
       .update({ updated_at: new Date().toISOString() })
       .eq('id', sid)
@@ -288,7 +283,7 @@ async function storeMessages(
 
   if (!sid) return
 
-  await supabase.from('ai_messages').insert([
+  await sb.from('ai_messages').insert([
     {
       session_id: sid,
       role: 'user',

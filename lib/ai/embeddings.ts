@@ -13,8 +13,10 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 
 export async function generateAndStoreEmbeddings(): Promise<void> {
   const supabase = createClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sb = supabase as any
 
-  const { data: rows, error } = await supabase
+  const { data: rows, error } = await sb
     .from('knowledge_base')
     .select('id, content')
     .is('embedding', null)
@@ -26,10 +28,11 @@ export async function generateAndStoreEmbeddings(): Promise<void> {
 
   let embedded = 0
   for (let i = 0; i < rows.length; i++) {
-    const row = rows[i]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const row = rows[i] as any
     try {
       const embedding = await generateEmbedding(row.content)
-      await supabase
+      await sb
         .from('knowledge_base')
         .update({ embedding: JSON.stringify(embedding) })
         .eq('id', row.id)

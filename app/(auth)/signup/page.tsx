@@ -47,6 +47,7 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [authError, setAuthError] = useState('')
   const [password, setPassword] = useState('')
+  const [emailSent, setEmailSent] = useState('')
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -55,7 +56,7 @@ export default function SignupPage() {
   async function onSubmit(data: FormData) {
     setAuthError('')
     const supabase = createClient()
-    const { error } = await supabase.auth.signUp({
+    const { data: authData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -66,8 +67,14 @@ export default function SignupPage() {
       setAuthError(error.message)
       return
     }
-    router.push('/dashboard')
-    router.refresh()
+    // If Supabase email confirmation is disabled, session is active immediately
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session) {
+      router.push('/dashboard')
+      router.refresh()
+    } else {
+      setEmailSent(authData.user?.email ?? '')
+    }
   }
 
   async function signInWithGoogle() {
@@ -161,6 +168,11 @@ export default function SignupPage() {
 
         {authError && (
           <p className="text-danger text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{authError}</p>
+        )}
+        {emailSent && (
+          <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-3 text-sm text-green-800">
+            ✅ Account created! Check <strong>{emailSent}</strong> for a confirmation link, then log in.
+          </div>
         )}
 
         <button

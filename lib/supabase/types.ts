@@ -15,6 +15,15 @@ export type Database = {
           referral_code: string | null
           referred_by: string | null
           is_active: boolean
+          is_premium: boolean
+          onboarding_completed: boolean
+          date_of_birth: string | null
+          gender: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null
+          state: string | null
+          city: string | null
+          category: 'general' | 'sc' | 'st' | 'obc_ncl' | 'ews' | null
+          is_island_st_native: boolean
+          deleted_at: string | null
           created_at: string
           updated_at: string
         }
@@ -29,6 +38,15 @@ export type Database = {
           referral_code?: string | null
           referred_by?: string | null
           is_active?: boolean
+          is_premium?: boolean
+          onboarding_completed?: boolean
+          date_of_birth?: string | null
+          gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null
+          state?: string | null
+          city?: string | null
+          category?: 'general' | 'sc' | 'st' | 'obc_ncl' | 'ews' | null
+          is_island_st_native?: boolean
+          deleted_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -43,6 +61,15 @@ export type Database = {
           referral_code?: string | null
           referred_by?: string | null
           is_active?: boolean
+          is_premium?: boolean
+          onboarding_completed?: boolean
+          date_of_birth?: string | null
+          gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null
+          state?: string | null
+          city?: string | null
+          category?: 'general' | 'sc' | 'st' | 'obc_ncl' | 'ews' | null
+          is_island_st_native?: boolean
+          deleted_at?: string | null
           updated_at?: string
         }
       }
@@ -51,12 +78,27 @@ export type Database = {
           id: string
           user_id: string
           qualification: 'class_10' | 'class_11' | 'class_12' | 'diploma' | 'engineering_grad' | 'bsc_grad' | 'other_grad' | null
+          board_10: string | null
+          board_12: string | null
           board: string | null
           year_of_passing: number | null
+          year_of_passing_10: number | null
+          year_of_passing_12: number | null
+          physics_percentage: number | null
+          chemistry_percentage: number | null
+          maths_percentage: number | null
           pcm_percentage: number | null
           english_percentage_10: number | null
           english_percentage_12: number | null
           aggregate_percentage: number | null
+          aggregate_percentage_10: number | null
+          diploma_field: string | null
+          diploma_percentage: number | null
+          diploma_english_medium: boolean
+          degree_field: string | null
+          degree_percentage: number | null
+          degree_university: string | null
+          degree_english_medium: boolean
           gender: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null
           category: 'general' | 'sc' | 'st' | 'obc_ncl' | 'ews' | null
           date_of_birth: string | null
@@ -67,12 +109,27 @@ export type Database = {
           id?: string
           user_id: string
           qualification?: 'class_10' | 'class_11' | 'class_12' | 'diploma' | 'engineering_grad' | 'bsc_grad' | 'other_grad' | null
+          board_10?: string | null
+          board_12?: string | null
           board?: string | null
           year_of_passing?: number | null
+          year_of_passing_10?: number | null
+          year_of_passing_12?: number | null
+          physics_percentage?: number | null
+          chemistry_percentage?: number | null
+          maths_percentage?: number | null
           pcm_percentage?: number | null
           english_percentage_10?: number | null
           english_percentage_12?: number | null
           aggregate_percentage?: number | null
+          aggregate_percentage_10?: number | null
+          diploma_field?: string | null
+          diploma_percentage?: number | null
+          diploma_english_medium?: boolean
+          degree_field?: string | null
+          degree_percentage?: number | null
+          degree_university?: string | null
+          degree_english_medium?: boolean
           gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null
           category?: 'general' | 'sc' | 'st' | 'obc_ncl' | 'ews' | null
           date_of_birth?: string | null
@@ -81,12 +138,27 @@ export type Database = {
         }
         Update: {
           qualification?: 'class_10' | 'class_11' | 'class_12' | 'diploma' | 'engineering_grad' | 'bsc_grad' | 'other_grad' | null
+          board_10?: string | null
+          board_12?: string | null
           board?: string | null
           year_of_passing?: number | null
+          year_of_passing_10?: number | null
+          year_of_passing_12?: number | null
+          physics_percentage?: number | null
+          chemistry_percentage?: number | null
+          maths_percentage?: number | null
           pcm_percentage?: number | null
           english_percentage_10?: number | null
           english_percentage_12?: number | null
           aggregate_percentage?: number | null
+          aggregate_percentage_10?: number | null
+          diploma_field?: string | null
+          diploma_percentage?: number | null
+          diploma_english_medium?: boolean
+          degree_field?: string | null
+          degree_percentage?: number | null
+          degree_university?: string | null
+          degree_english_medium?: boolean
           gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null
           category?: 'general' | 'sc' | 'st' | 'obc_ncl' | 'ews' | null
           date_of_birth?: string | null
@@ -456,6 +528,162 @@ export type Database = {
         }
         Update: {
           is_read?: boolean
+        }
+      }
+      eligibility_checks: {
+        Row: {
+          id: string
+          user_id: string
+          input_data: Json
+          results: Json
+          eligible_course_ids: string[]
+          score: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          input_data: Json
+          results: Json
+          eligible_course_ids?: string[]
+          score?: number | null
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
+      cet_schedules: {
+        Row: {
+          id: string
+          year: number
+          exam_date: string | null
+          registration_start: string | null
+          registration_end: string | null
+          result_date: string | null
+          status: 'upcoming' | 'registration_open' | 'ongoing' | 'completed'
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          year: number
+          exam_date?: string | null
+          registration_start?: string | null
+          registration_end?: string | null
+          result_date?: string | null
+          status?: 'upcoming' | 'registration_open' | 'ongoing' | 'completed'
+          created_at?: string
+        }
+        Update: {
+          status?: 'upcoming' | 'registration_open' | 'ongoing' | 'completed'
+        }
+      }
+      user_cet_performance: {
+        Row: {
+          id: string
+          user_id: string
+          mathematics_avg: number | null
+          physics_avg: number | null
+          chemistry_avg: number | null
+          english_avg: number | null
+          aptitude_avg: number | null
+          overall_avg: number | null
+          tests_taken: number
+          best_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          mathematics_avg?: number | null
+          physics_avg?: number | null
+          chemistry_avg?: number | null
+          english_avg?: number | null
+          aptitude_avg?: number | null
+          overall_avg?: number | null
+          tests_taken?: number
+          best_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          mathematics_avg?: number | null
+          physics_avg?: number | null
+          chemistry_avg?: number | null
+          english_avg?: number | null
+          aptitude_avg?: number | null
+          overall_avg?: number | null
+          tests_taken?: number
+          best_score?: number | null
+          updated_at?: string
+        }
+      }
+      mock_test_attempts: {
+        Row: {
+          id: string
+          user_id: string
+          test_type: string
+          score: number | null
+          max_score: number | null
+          time_taken_seconds: number | null
+          subject_scores: Json | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          test_type?: string
+          score?: number | null
+          max_score?: number | null
+          time_taken_seconds?: number | null
+          subject_scores?: Json | null
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
+      leads: {
+        Row: {
+          id: string
+          email: string | null
+          phone: string | null
+          source: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email?: string | null
+          phone?: string | null
+          source?: string | null
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
+      user_applications: {
+        Row: {
+          id: string
+          user_id: string
+          company_name: string
+          program_name: string
+          department: string | null
+          applied_date: string | null
+          status: 'applied' | 'written_test' | 'medical' | 'interview' | 'offered' | 'rejected'
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          company_name: string
+          program_name: string
+          department?: string | null
+          applied_date?: string | null
+          status?: 'applied' | 'written_test' | 'medical' | 'interview' | 'offered' | 'rejected'
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          status?: 'applied' | 'written_test' | 'medical' | 'interview' | 'offered' | 'rejected'
+          notes?: string | null
+          updated_at?: string
         }
       }
     }

@@ -10,7 +10,10 @@ export async function GET(req: NextRequest) {
   const limit = 10
   const from = (page - 1) * limit
 
-  const { data: sessions, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sb = supabase as any
+
+  const { data: sessions, error } = await sb
     .from('ai_sessions')
     .select('id, created_at, updated_at')
     .eq('user_id', user.id)
@@ -22,8 +25,9 @@ export async function GET(req: NextRequest) {
 
   // Fetch first message for each session
   const enriched = await Promise.all(
-    (sessions ?? []).map(async (s) => {
-      const { data: msgs } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (sessions ?? []).map(async (s: any) => {
+      const { data: msgs } = await sb
         .from('ai_messages')
         .select('content, role')
         .eq('session_id', s.id)
@@ -31,13 +35,14 @@ export async function GET(req: NextRequest) {
         .order('created_at', { ascending: true })
         .limit(1)
 
-      const { count } = await supabase
+      const { count } = await sb
         .from('ai_messages')
         .select('id', { count: 'exact', head: true })
         .eq('session_id', s.id)
 
       return {
         ...s,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         first_message_preview: msgs?.[0]?.content?.slice(0, 80) ?? '',
         message_count: count ?? 0,
       }
