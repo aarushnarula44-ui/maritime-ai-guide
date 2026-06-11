@@ -8,11 +8,11 @@ import { createClient } from '@/lib/supabase/client'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 
 const NAV_LINKS = [
+  { href: '/eligibility', label: 'Check Eligibility' },
   { href: '/courses', label: 'Courses' },
   { href: '/colleges', label: 'Colleges' },
   { href: '/cet', label: 'CET Prep' },
   { href: '/salaries', label: 'Salaries' },
-  { href: '/sponsorships', label: 'Sponsorships' },
 ]
 
 export default function Navbar() {
@@ -162,6 +162,9 @@ export default function Navbar() {
               ))}
             </div>
             <div className="p-5 border-t border-border space-y-3">
+              <Link href="/eligibility" className="flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold py-2.5 rounded-full w-full" onClick={() => setMobileOpen(false)}>
+                Check My Eligibility →
+              </Link>
               <Link href="/advisor" className="flex items-center justify-center gap-2 bg-accent text-primary text-sm font-semibold py-2.5 rounded-full w-full" onClick={() => setMobileOpen(false)}>
                 <Sparkles className="w-4 h-4" /> Ask NavAI
               </Link>

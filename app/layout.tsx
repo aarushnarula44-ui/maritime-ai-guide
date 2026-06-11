@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import NavAIWidget from '@/components/ui/NavAIWidget'
+import EligibilityCacheInit from '@/components/ui/EligibilityCacheInit'
 
 export const metadata: Metadata = {
   title: 'Maritime AI Guide — India\'s #1 Merchant Navy Career Platform',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-body antialiased bg-surface text-text-primary">
         {children}
         <NavAIWidget />
+        <EligibilityCacheInit />
       </body>
     </html>
   )
