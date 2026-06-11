@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Anchor, Menu, X, ChevronDown, LogOut, User, Settings, LayoutDashboard, Sparkles } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
+import { GlobalSearch } from '@/components/layout/GlobalSearch'
 
 const NAV_LINKS = [
   { href: '/eligibility', label: 'Check Eligibility' },
@@ -75,6 +76,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <GlobalSearch />
             <Link
               href="/advisor"
               className="flex items-center gap-1.5 bg-accent text-primary text-sm font-semibold px-4 py-2 rounded-full hover:bg-accent-dark transition"

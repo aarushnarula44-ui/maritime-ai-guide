@@ -3,17 +3,9 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Shield, Zap, Trophy, ChevronRight } from 'lucide-react'
+import { CourseCard } from '@/components/courses/CourseCard'
+import { STATIC_COURSES } from '@/lib/static-data'
 
-const COURSES = [
-  { name: 'B.Sc. Nautical Science', dept: 'Deck', duration: '3 Years', minQual: 'Class 12 PCM', salary: '$400–$15,000/mo', color: '#1E3A5F', slug: 'bsc-nautical-science' },
-  { name: 'DNS', dept: 'Deck', duration: '1 Year', minQual: 'Class 12 PCM', salary: '$400–$15,000/mo', color: '#1E3A5F', slug: 'dns-diploma-nautical-science' },
-  { name: 'BE Marine Engineering', dept: 'Engine', duration: '4 Years', minQual: 'Class 12 PCM', salary: '$400–$20,000/mo', color: '#0F4C35', slug: 'be-btech-marine-engineering' },
-  { name: 'GME', dept: 'Engine', duration: '1 Year', minQual: 'BE Mechanical', salary: '$400–$20,000/mo', color: '#0F4C35', slug: 'graduate-marine-engineering' },
-  { name: 'Diploma Marine Engineering', dept: 'Engine', duration: '2 Years', minQual: 'Class 10', salary: '$300–$12,000/mo', color: '#0F4C35', slug: 'diploma-marine-engineering' },
-  { name: 'ETO', dept: 'ETO', duration: '4 Months', minQual: 'BE Electrical/Electronics', salary: '$2,500–$7,000/mo', color: '#3D1A6E', slug: 'electro-technical-officer' },
-  { name: 'GP Rating', dept: 'Ratings', duration: '6 Months', minQual: 'Class 10', salary: '$600–$2,000/mo', color: '#1A4A2E', slug: 'gp-rating' },
-  { name: 'Maritime Catering (CCMC)', dept: 'Catering', duration: '6 Months', minQual: 'Class 10', salary: '$500–$1,500/mo', color: '#4A2A1A', slug: 'maritime-catering-ccmc' },
-]
 
 const PROBLEMS = [
   { icon: '🤔', title: "Don't know which maritime course you qualify for", hint: 'Our AI checks your eligibility in 60 seconds' },
@@ -275,24 +267,10 @@ export default function LandingPage() {
           </h2>
           <p className="text-text-secondary text-center mb-10">All approved by Directorate General of Shipping, India</p>
           <div className="flex gap-4 overflow-x-auto md:grid md:grid-cols-4 pb-4 md:pb-0">
-            {COURSES.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/courses/${c.slug}`}
-                className="flex-shrink-0 w-56 md:w-auto bg-white rounded-xl border border-border shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
-              >
-                <div className="h-2" style={{ backgroundColor: c.color }} />
-                <div className="p-4">
-                  <span className="text-xs font-medium text-text-muted uppercase tracking-wide">{c.dept}</span>
-                  <h3 className="font-display font-semibold text-primary mt-1 mb-2 leading-tight">{c.name}</h3>
-                  <div className="space-y-1 mb-3">
-                    <p className="text-xs text-text-secondary">⏱ {c.duration}</p>
-                    <p className="text-xs text-text-secondary">📋 {c.minQual}</p>
-                  </div>
-                  <p className="text-accent font-semibold text-sm">{c.salary}</p>
-                  <p className="text-accent text-xs mt-2 font-medium">Explore →</p>
-                </div>
-              </Link>
+            {STATIC_COURSES.map((c) => (
+              <div key={c.id} className="flex-shrink-0 w-56 md:w-auto">
+                <CourseCard course={c} />
+              </div>
             ))}
           </div>
         </div>

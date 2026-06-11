@@ -283,6 +283,119 @@ export type Database = {
           updated_at?: string
         }
       }
+      college_courses: {
+        Row: {
+          id: string
+          college_id: string
+          course_id: string
+          annual_fees: number | null
+          seats: number | null
+          admission_type: string | null
+          application_deadline: string | null
+        }
+        Insert: {
+          id?: string
+          college_id: string
+          course_id: string
+          annual_fees?: number | null
+          seats?: number | null
+          admission_type?: string | null
+          application_deadline?: string | null
+        }
+        Update: {
+          annual_fees?: number | null
+          seats?: number | null
+          admission_type?: string | null
+          application_deadline?: string | null
+        }
+      }
+      user_saved_courses: {
+        Row: {
+          id: string
+          user_id: string
+          course_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          course_id: string
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
+      user_saved_colleges: {
+        Row: {
+          id: string
+          user_id: string
+          college_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          college_id: string
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
+      college_reviews: {
+        Row: {
+          id: string
+          college_id: string
+          user_id: string
+          rating_overall: number
+          rating_teaching: number | null
+          rating_placement: number | null
+          rating_facilities: number | null
+          review_text: string | null
+          course_attended: string | null
+          graduation_year: number | null
+          is_verified: boolean
+          is_helpful_count: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          college_id: string
+          user_id: string
+          rating_overall: number
+          rating_teaching?: number | null
+          rating_placement?: number | null
+          rating_facilities?: number | null
+          review_text?: string | null
+          course_attended?: string | null
+          graduation_year?: number | null
+          is_verified?: boolean
+          is_helpful_count?: number
+          created_at?: string
+        }
+        Update: {
+          rating_overall?: number
+          review_text?: string | null
+          is_verified?: boolean
+          is_helpful_count?: number
+        }
+      }
+      fraud_reports: {
+        Row: {
+          id: string
+          college_id: string
+          user_id: string
+          report_type: string
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          college_id: string
+          user_id: string
+          report_type: string
+          description?: string | null
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
       ai_sessions: {
         Row: {
           id: string

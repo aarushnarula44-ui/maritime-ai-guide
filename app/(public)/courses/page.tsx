@@ -1,18 +1,55 @@
-import { BookOpen } from 'lucide-react'
+import type { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
+import { STATIC_COURSES } from '@/lib/static-data'
+import { CourseExplorer } from '@/components/courses/CourseExplorer'
 
-export const metadata = { title: 'Courses — Maritime AI Guide' }
+export const revalidate = 86400
 
-export default function CoursesPage() {
+export const metadata: Metadata = {
+  title: 'Maritime Courses in India — 8 DGS Approved Paths | Maritime AI Guide',
+  description:
+    'Explore all 8 official DGS-approved maritime career paths in India. Compare B.Sc. Nautical Science, DNS, BE Marine Engineering, GME, ETO, GP Rating and more.',
+}
+
+async function getCourses() {
+  try {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('courses')
+      .select('*')
+      .eq('is_active', true)
+      .order('department')
+    if (error || !data?.length) return STATIC_COURSES
+    return data
+  } catch {
+    return STATIC_COURSES
+  }
+}
+
+export default async function CoursesPage() {
+  const courses = await getCourses()
+
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-28 pb-16 text-center">
-      <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-6">
-        <BookOpen className="w-8 h-8 text-primary" />
-      </div>
-      <h1 className="font-display text-4xl font-bold text-primary mb-3">Course Explorer</h1>
-      <p className="text-text-secondary text-lg mb-4">All 8 DGS-approved pre-sea maritime courses in one place.</p>
-      <span className="inline-block bg-accent/10 text-accent font-medium text-sm px-4 py-2 rounded-full">
-        Coming in Sprint 3
-      </span>
-    </div>
+    <main className="min-h-screen">
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-primary via-primary-light to-[#0D2444] min-h-[220px] flex items-center pt-20">
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <p className="text-accent text-sm font-semibold uppercase tracking-widest mb-2">
+            DGS Approved Courses
+          </p>
+          <h1 className="font-display text-3xl md:text-5xl font-bold text-white mb-3">
+            Explore Maritime Career Paths
+          </h1>
+          <p className="text-blue-200 text-lg max-w-xl">
+            8 official DGS-approved pathways. Find the one built for you.
+          </p>
+        </div>
+      </section>
+
+      {/* Explorer */}
+      <section className="max-w-7xl mx-auto px-4 py-10">
+        <CourseExplorer courses={courses} />
+      </section>
+    </main>
   )
 }
