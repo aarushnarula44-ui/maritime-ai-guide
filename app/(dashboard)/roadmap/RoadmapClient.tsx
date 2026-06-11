@@ -65,27 +65,44 @@ const DEPT_SUMMARY: Record<string, { timeToJob: string; investment: string; firs
   ratings: { timeToJob: '6 months', investment: '₹50K – ₹1.5L', firstSalary: '$600–1,200/mo', topSalaryTime: '~8 years' },
 }
 
-const STCW_CERTS: Record<string, { label: string; when: string; cost: string }[]> = {
-  deck: [
-    { label: 'Basic Safety Training (BST)', when: 'Before joining', cost: '₹15,000–25,000' },
-    { label: 'GMDSS Operator Certificate', when: 'Before 3rd Officer', cost: '₹30,000–50,000' },
-    { label: 'Advanced Firefighting', when: 'Before Chief Officer', cost: '₹10,000–20,000' },
-    { label: 'Medical First Aid (MEFA)', when: 'Before OOW', cost: '₹8,000–15,000' },
-  ],
-  engine: [
-    { label: 'Basic Safety Training (BST)', when: 'Before joining', cost: '₹15,000–25,000' },
-    { label: 'Engine Room Simulator', when: 'For CoC exams', cost: '₹20,000–40,000' },
-    { label: 'Advanced Firefighting', when: 'Before 2nd Engineer', cost: '₹10,000–20,000' },
-  ],
-  eto: [
-    { label: 'Basic Safety Training (BST)', when: 'Before joining', cost: '₹15,000–25,000' },
-    { label: 'GMDSS Operator', when: 'Before first ship', cost: '₹30,000–50,000' },
-  ],
-  ratings: [
-    { label: 'Basic Safety Training (BST)', when: 'During GP Rating', cost: 'Included in course' },
-    { label: 'Proficiency in Survival Craft', when: 'Year 3+', cost: '₹10,000–20,000' },
-  ],
-}
+const STCW_ALL = [
+  { label: 'Basic Safety Training (BST)', who: 'all', when: 'Pre-sea (mandatory before joining)', rank: 'Before any ship', duration: '5–7 days', cost: '₹8,000–15,000' },
+  { label: 'Proficiency in Survival Craft (PSCRB)', who: 'all', when: 'Before 3rd Officer / 4th Engineer', rank: '3rd Officer / 4th Eng', duration: '3 days', cost: '₹10,000–20,000' },
+  { label: 'Advanced Firefighting (AFF)', who: 'all', when: 'Before 3rd Officer / 4th Engineer', rank: '3rd Officer / 4th Eng', duration: '3 days', cost: '₹10,000–18,000' },
+  { label: 'Medical First Aid (MFA)', who: 'all', when: 'Before OOW / Officer of Watch', rank: '3rd Officer', duration: '3 days', cost: '₹8,000–15,000' },
+  { label: 'GMDSS GOC (Global Maritime Distress)', who: 'deck', when: 'Deck only — before 3rd Officer', rank: '3rd Officer', duration: '45 days', cost: '₹30,000–50,000' },
+  { label: 'Bridge Resource Management (BRM)', who: 'deck', when: 'Before Chief Officer', rank: 'Chief Officer', duration: '5 days', cost: '₹15,000–25,000' },
+  { label: 'Medical Care (Deck)', who: 'deck', when: 'Before Chief Officer', rank: 'Chief Officer', duration: '5 days', cost: '₹10,000–20,000' },
+  { label: 'Engine Room Resource Management (ERM)', who: 'engine', when: 'Before 2nd Engineer', rank: '2nd Engineer', duration: '5 days', cost: '₹15,000–25,000' },
+  { label: 'Leadership and Managerial Skills', who: 'all', when: 'Before Master / Chief Engineer', rank: 'Master / Chief Eng', duration: '5 days', cost: '₹20,000–35,000' },
+]
+
+const SHORE_CAREERS_DECK = [
+  { role: 'Marine Superintendent', experience: '10+ years sea', salary: '₹15–40L/year' },
+  { role: 'DGS Surveyor', experience: '8+ years, pass exam', salary: '₹12–25L/year' },
+  { role: 'Port State Control Officer', experience: '5+ years OOW', salary: '₹10–20L/year' },
+  { role: 'Maritime Lecturer / Instructor', experience: '5+ years sea', salary: '₹8–20L/year' },
+  { role: 'Ship Broker', experience: '3+ years sea preferred', salary: '₹15–60L/year' },
+  { role: 'Marine Insurance Surveyor', experience: '8+ years sea', salary: '₹12–35L/year' },
+]
+
+const SHORE_CAREERS_ENGINE = [
+  { role: 'Technical Superintendent', experience: '10+ years sea', salary: '₹15–40L/year' },
+  { role: 'Classification Society Surveyor', experience: '8+ years, pass exam', salary: '₹12–30L/year' },
+  { role: 'Marine Consultant', experience: '10+ years sea', salary: '₹20–60L/year' },
+  { role: 'Offshore Engineering Manager', experience: '8+ years sea', salary: '₹20–50L/year' },
+  { role: 'Ship Repair Manager', experience: '8+ years sea', salary: '₹12–30L/year' },
+]
+
+const COMPARE_ROWS = [
+  { label: 'Pre-sea duration', deck: '12–36 months', engine: '12–48 months', better: 'deck' },
+  { label: 'Pre-sea cost', deck: '₹3L – ₹8L', engine: '₹3L – ₹12L', better: 'deck' },
+  { label: 'Time to first salary', deck: '~18–36 months', engine: '~12–18 months (GME)', better: 'engine' },
+  { label: 'Starting salary', deck: '$400–800/mo', engine: '$800–1,500/mo', better: 'engine' },
+  { label: 'Peak salary', deck: '$10,000–15,000/mo', engine: '$10,000–14,000/mo', better: 'similar' },
+  { label: 'Time to peak salary', deck: '~15 years', engine: '~12 years', better: 'engine' },
+  { label: 'Work environment', deck: 'Bridge — outdoors, navigation', engine: 'Engine room — technical, indoors', better: 'similar' },
+]
 
 function NodeCard({ node, index }: { node: RoadmapNode; index: number }) {
   const [expanded, setExpanded] = useState(false)
@@ -150,11 +167,15 @@ export function RoadmapClient({ preferences, userId }: { preferences: Preference
 
   const nodes = dept ? (DEPT_NODES[dept] ?? []) : []
   const summary = dept ? DEPT_SUMMARY[dept] : null
-  const stcw = dept ? (STCW_CERTS[dept] ?? []) : []
+  const stcwForDept = dept
+    ? STCW_ALL.filter((c) => c.who === 'all' || c.who === dept)
+    : STCW_ALL
+  const shoreCareers = dept === 'engine' ? SHORE_CAREERS_ENGINE : SHORE_CAREERS_DECK
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="space-y-8">
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-primary">Your Personalized Career Roadmap</h1>
           {dept && <p className="text-text-secondary text-sm mt-1">{dept.charAt(0).toUpperCase() + dept.slice(1)} Department{prio ? ` · ${prio.replace('_', ' ')} priority` : ''}</p>}
@@ -224,25 +245,97 @@ export function RoadmapClient({ preferences, userId }: { preferences: Preference
             </div>
           )}
 
-          {/* STCW */}
-          {stcw.length > 0 && (
-            <div className="bg-white rounded-xl shadow-card p-6">
-              <h3 className="font-semibold text-text-primary mb-4">STCW Certificates Needed</h3>
-              <div className="space-y-3">
-                {stcw.map((cert) => (
-                  <div key={cert.label} className="flex items-start justify-between border-b border-border/50 pb-3">
-                    <div>
-                      <p className="text-sm font-medium text-text-primary">{cert.label}</p>
-                      <p className="text-xs text-text-muted mt-0.5">When: {cert.when}</p>
+          {/* STCW Timeline */}
+          <div className="bg-white rounded-xl shadow-card p-6">
+            <h3 className="font-semibold text-text-primary mb-5">STCW Certificates Timeline</h3>
+            <div className="space-y-3">
+              {stcwForDept.map((cert) => (
+                <div key={cert.label} className="flex gap-4 items-start">
+                  <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
+                  <div className="flex-1 pb-3 border-b border-border/50 last:border-0 last:pb-0">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div>
+                        <p className="text-sm font-medium text-text-primary">{cert.label}</p>
+                        <p className="text-xs text-text-muted mt-0.5">When: {cert.when}</p>
+                        <p className="text-xs text-text-muted">Duration: {cert.duration}</p>
+                      </div>
+                      <span className="text-xs bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded-full flex-shrink-0">{cert.cost}</span>
                     </div>
-                    <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full flex-shrink-0 ml-4">{cert.cost}</span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
         </div>
       )}
+
+      {/* CAREER COMPARISON — always visible */}
+      <div className="bg-white rounded-xl shadow-card p-6">
+        <h2 className="font-display text-xl font-bold text-primary mb-2">Compare Two Career Paths</h2>
+        <p className="text-sm text-text-secondary mb-5">Deck Department vs Engine Department — side by side.</p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left py-2 pr-4 text-text-muted font-medium text-xs uppercase tracking-wider w-1/3">Factor</th>
+                <th className="text-center py-2 px-4 font-semibold text-primary">⚓ Deck</th>
+                <th className="text-center py-2 px-4 font-semibold text-primary">⚙️ Engine</th>
+              </tr>
+            </thead>
+            <tbody>
+              {COMPARE_ROWS.map((row) => (
+                <tr key={row.label} className="border-b border-border/50 last:border-0">
+                  <td className="py-3 pr-4 text-xs text-text-muted">{row.label}</td>
+                  <td className={`py-3 px-4 text-center text-sm ${row.better === 'deck' ? 'font-semibold text-green-700' : 'text-text-primary'}`}>
+                    {row.deck}
+                    {row.better === 'deck' && <span className="ml-1 text-green-600">✓</span>}
+                  </td>
+                  <td className={`py-3 px-4 text-center text-sm ${row.better === 'engine' ? 'font-semibold text-green-700' : 'text-text-primary'}`}>
+                    {row.engine}
+                    {row.better === 'engine' && <span className="ml-1 text-green-600">✓</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-4 text-center">
+          <Link href="/advisor" className="text-sm text-accent font-semibold hover:underline">
+            Which suits me? Ask NavAI →
+          </Link>
+        </div>
+      </div>
+
+      {/* SHORE CAREERS */}
+      <div className="bg-white rounded-xl shadow-card p-6">
+        <h2 className="font-display text-xl font-bold text-primary mb-2">After Your Sea Career</h2>
+        <p className="text-sm text-text-secondary mb-5">
+          Shore-based roles available to experienced {dept === 'engine' ? 'Engine' : 'Deck'} Officers.
+        </p>
+        <div className="grid md:grid-cols-2 gap-3">
+          {shoreCareers.map((career) => (
+            <div key={career.role} className="border border-border rounded-xl p-4 hover:border-accent/50 transition">
+              <p className="font-semibold text-primary text-sm mb-1">{career.role}</p>
+              <p className="text-xs text-text-muted">Sea experience: {career.experience}</p>
+              <p className="text-xs text-green-700 font-medium mt-1">{career.salary}</p>
+              <Link href={`/advisor?q=Tell me about shore career as ${encodeURIComponent(career.role)}`} className="text-xs text-accent hover:underline mt-2 block">
+                Ask NavAI about this role →
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PDF EXPORT PLACEHOLDER */}
+      <div className="bg-surface border border-border rounded-xl p-5 flex items-center justify-between">
+        <div>
+          <p className="font-semibold text-primary text-sm">Save Your Roadmap</p>
+          <p className="text-xs text-text-secondary mt-0.5">PDF export coming soon — for now, take a screenshot or bookmark this page.</p>
+        </div>
+        <div className="bg-white border border-border rounded-lg px-4 py-2 text-xs text-text-muted">
+          Coming soon
+        </div>
+      </div>
     </div>
   )
 }

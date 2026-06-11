@@ -16,6 +16,9 @@ const RESOURCES = [
   { href: '/salary', label: 'Salary Data' },
   { href: '/sponsorships', label: 'Sponsorships' },
   { href: '/roadmap', label: 'Career Roadmap' },
+  { href: '/medical', label: 'Medical Requirements' },
+  { href: '/fraud-protection', label: 'Fraud Protection' },
+  { href: '/parents', label: 'For Parents' },
 ]
 
 const COMPANY = [

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Anchor, Menu, X, ChevronDown, LogOut, User, Settings, LayoutDashboard, Sparkles } from 'lucide-react'
+import { Anchor, Menu, X, ChevronDown, LogOut, User, Settings, LayoutDashboard, Sparkles, BookOpen } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { GlobalSearch } from '@/components/layout/GlobalSearch'
@@ -17,12 +17,20 @@ const NAV_LINKS = [
   { href: '/salary', label: 'Salaries' },
 ]
 
+const RESOURCES_LINKS = [
+  { href: '/roadmap', label: 'Career Roadmap' },
+  { href: '/medical', label: 'Medical Requirements' },
+  { href: '/fraud-protection', label: 'Fraud Protection' },
+  { href: '/parents', label: 'For Parents' },
+]
+
 export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [resourcesOpen, setResourcesOpen] = useState(false)
   const [user, setUser] = useState<SupabaseUser | null>(null)
 
   useEffect(() => {
@@ -74,6 +82,33 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <div className="relative">
+              <button
+                onClick={() => setResourcesOpen(!resourcesOpen)}
+                onBlur={() => setTimeout(() => setResourcesOpen(false), 150)}
+                className={`flex items-center gap-1 text-sm font-medium transition-colors ${
+                  scrolled ? 'text-text-secondary hover:text-primary' : 'text-blue-100 hover:text-white'
+                }`}
+              >
+                <BookOpen className="w-4 h-4" />
+                Resources
+                <ChevronDown className="w-3 h-3" />
+              </button>
+              {resourcesOpen && (
+                <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-xl shadow-floating border border-border py-1 animate-fade-in z-50">
+                  {RESOURCES_LINKS.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block px-4 py-2 text-sm text-text-primary hover:bg-surface"
+                      onClick={() => setResourcesOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
@@ -151,7 +186,7 @@ export default function Navbar() {
                 <X className="w-5 h-5 text-text-muted" />
               </button>
             </div>
-            <div className="flex-1 py-4">
+            <div className="flex-1 py-4 overflow-y-auto">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
@@ -164,6 +199,19 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <div className="border-t border-border mt-2 pt-2">
+                <p className="px-5 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider">Resources</p>
+                {RESOURCES_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block px-5 py-3 text-sm font-medium text-text-primary hover:bg-surface"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
             <div className="p-5 border-t border-border space-y-3">
               <Link href="/eligibility" className="flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold py-2.5 rounded-full w-full" onClick={() => setMobileOpen(false)}>

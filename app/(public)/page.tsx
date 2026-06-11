@@ -280,12 +280,13 @@ export default function LandingPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-floating">
           <div className="bg-primary p-10 text-white">
-            <h2 className="font-display text-2xl font-bold mb-6">For Parents Who Have Questions</h2>
+            <h2 className="font-display text-2xl font-bold mb-2">For Parents Who Have Questions</h2>
+            <p className="text-blue-200 text-sm mb-6">Honest answers to the most common parent concerns about merchant navy careers.</p>
             <div className="space-y-6">
               {[
-                { q: 'Is merchant navy a stable career?', a: 'Yes. Certified officers are in global demand. Indian-licensed officers work on ships worldwide.' },
-                { q: 'Are the salaries real?', a: 'Yes. Chief Engineers earn ₹15–₹60 lakhs/month tax-free. Even entry-level officers earn ₹1.5–2L/month.' },
-                { q: 'How do we find verified colleges?', a: 'Use our College Finder. We cross-verify every institute against the official DGS approval list.' },
+                { q: 'Is merchant navy safe for my child?', a: 'Modern shipping follows strict international conventions (SOLAS, STCW). Seafarers complete mandatory safety training before joining any vessel. Ships carry lifeboats, satellite communication, and GPS tracking.' },
+                { q: 'How much will they earn?', a: 'Starting as a cadet: $400–800/month. By the time they become Captain or Chief Engineer (12–18 years): $10,000–15,000+/month, largely tax-free for NRI seafarers.' },
+                { q: 'How do we verify a college is legitimate?', a: 'Only enroll in DGS-approved institutes. Use our Fraud Protection tool to instantly verify any college. Never pay fees without verification.' },
               ].map((item) => (
                 <div key={item.q}>
                   <p className="font-semibold text-accent mb-1">Q: {item.q}</p>
@@ -293,6 +294,12 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
+            <Link
+              href="/parents"
+              className="inline-flex items-center gap-2 mt-6 bg-accent text-primary text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-accent-dark transition"
+            >
+              Read the Parent Guide →
+            </Link>
           </div>
           <div className="bg-surface p-10">
             <h2 className="font-display text-2xl font-bold text-primary mb-6">Why Trust Us?</h2>
