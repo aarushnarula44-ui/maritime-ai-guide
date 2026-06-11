@@ -13,7 +13,7 @@ const COURSES = [
 const RESOURCES = [
   { href: '/cet', label: 'CET Guide' },
   { href: '/colleges', label: 'College Finder' },
-  { href: '/salaries', label: 'Salary Data' },
+  { href: '/salary', label: 'Salary Data' },
   { href: '/sponsorships', label: 'Sponsorships' },
   { href: '/roadmap', label: 'Career Roadmap' },
 ]

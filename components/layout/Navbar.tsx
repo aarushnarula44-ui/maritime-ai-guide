@@ -14,7 +14,7 @@ const NAV_LINKS = [
   { href: '/courses', label: 'Courses' },
   { href: '/colleges', label: 'Colleges' },
   { href: '/cet', label: 'CET Prep' },
-  { href: '/salaries', label: 'Salaries' },
+  { href: '/salary', label: 'Salaries' },
 ]
 
 export default function Navbar() {
