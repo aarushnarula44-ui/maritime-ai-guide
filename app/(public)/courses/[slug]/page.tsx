@@ -69,6 +69,8 @@ export async function generateStaticParams() {
   return STATIC_COURSES.map((c) => ({ slug: c.slug }))
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://maritimeaiguide.in'
+
 export async function generateMetadata({
   params,
 }: {
@@ -78,7 +80,14 @@ export async function generateMetadata({
   if (!course) return { title: 'Course Not Found' }
   return {
     title: `${course.name} — Eligibility, Salary & Colleges | Maritime AI Guide`,
-    description: course.description ?? undefined,
+    description: course.description ?? `Learn about ${course.name}: eligibility requirements, salary expectations, duration, and top DGS-approved colleges in India.`,
+    openGraph: {
+      title: `${course.name} — Eligibility, Salary & Colleges`,
+      description: course.description ?? undefined,
+      url: `${BASE_URL}/courses/${course.slug}`,
+      images: [{ url: '/opengraph-image', width: 1200, height: 630 }],
+    },
+    alternates: { canonical: `${BASE_URL}/courses/${course.slug}` },
   }
 }
 
@@ -114,8 +123,27 @@ export default async function CourseDetailPage({ params }: { params: { slug: str
     admission_type: cc.admission_type,
   })).filter(Boolean)
 
+  const courseJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: course.name,
+    description: course.description ?? undefined,
+    url: `${BASE_URL}/courses/${course.slug}`,
+    provider: {
+      '@type': 'Organization',
+      name: 'Directorate General of Shipping, India',
+      url: 'https://dgshipping.gov.in',
+    },
+    educationalCredentialAwarded: course.name,
+    timeRequired: course.duration_display ?? undefined,
+  }
+
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }}
+      />
       {/* Hero */}
       <section
         className="pt-24 pb-10 text-white"
