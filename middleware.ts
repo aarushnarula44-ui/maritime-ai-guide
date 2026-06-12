@@ -38,13 +38,31 @@ export async function middleware(request: NextRequest) {
       loginUrl.searchParams.set('redirect', pathname)
       return NextResponse.redirect(loginUrl)
     }
-    const { data: profile } = await supabase
+
+    // Use service role key if available so this check is never blocked by RLS.
+    // Falls back to the session client (which works if RLS allows self-reads).
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    let adminClient = supabase
+    if (serviceRoleKey && supabaseUrl) {
+      const { createServerClient } = await import('@supabase/ssr')
+      adminClient = createServerClient(supabaseUrl, serviceRoleKey, {
+        cookies: { getAll: () => [], setAll: () => {} },
+      })
+    }
+
+    const { data: profile, error: profileError } = await adminClient
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
+
+    if (profileError) {
+      console.error('[Middleware] Admin role check failed:', profileError.message, 'user:', user.id)
+    }
+
     const role = (profile as { role?: string } | null)?.role
-    if (!profile || !['admin', 'super_admin'].includes(role ?? '')) {
+    if (!role || !['admin', 'super_admin'].includes(role)) {
+      console.warn('[Middleware] Access denied — role:', role ?? 'null', 'user:', user.id)
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   }
