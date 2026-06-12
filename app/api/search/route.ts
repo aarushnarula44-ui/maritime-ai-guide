@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { STATIC_COURSES, STATIC_COLLEGES } from '@/lib/static-data'
 import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get('q')?.trim().toLowerCase()

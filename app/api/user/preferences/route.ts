@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
 
 const schema = z.object({
   target_department: z.enum(['deck', 'engine', 'eto', 'ratings', 'undecided']).nullable().optional(),

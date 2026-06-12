@@ -10,6 +10,7 @@ import { getRecentMessages } from '@/lib/ai/conversationManager'
 import type { UserProfileSummary } from '@/lib/ai/conversationManager'
 import { getCachedResponse, setCachedResponse, loadResponseCache } from '@/lib/ai/responseCache'
 import { getBudgetStatus, recordUsage, selectModel } from '@/lib/ai/costCircuitBreaker'
+export const dynamic = 'force-dynamic'
 
 // OpenAI client is instantiated inside the pipeline function to avoid
 // crashing the build when OPENAI_API_KEY is absent during static generation.

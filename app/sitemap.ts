@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://maritimeaiguide.in'
 

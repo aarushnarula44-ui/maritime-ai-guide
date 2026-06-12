@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin, getSupabase } from '@/lib/supabase/admin-auth'
 import { getDailyUsage, getBudgetStatus } from '@/lib/ai/costCircuitBreaker'
 import { format, subDays } from 'date-fns'
+export const dynamic = 'force-dynamic'
 
 export const revalidate = 300 // 5 minute cache
 

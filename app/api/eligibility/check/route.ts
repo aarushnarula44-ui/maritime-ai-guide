@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { runEligibilityCheck, COURSE_RULES, type UserProfile } from '@/lib/eligibility/engine'
 import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
 
 // ── Zod schema ────────────────────────────────────────────────────────────────
 

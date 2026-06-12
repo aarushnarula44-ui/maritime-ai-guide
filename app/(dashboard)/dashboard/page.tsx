@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { DashboardClient } from './DashboardClient'
+export const dynamic = 'force-dynamic'
 
 function ProfileRing({ pct }: { pct: number }) {
   const r = 28

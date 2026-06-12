@@ -1,5 +1,6 @@
 import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
 
 export async function generateEmbedding(text: string): Promise<number[]> {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { RoadmapClient } from './RoadmapClient'
+export const dynamic = 'force-dynamic'
 
 export const metadata = { title: 'Career Roadmap — Maritime AI Guide' }
 

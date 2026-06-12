@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { MockTestEngine, type Question } from '@/components/cet/MockTestEngine'
 import { BookOpen, Target, Layers } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+export const dynamic = 'force-dynamic'
 
 const SUBJECTS = ['Mathematics', 'Physics', 'Chemistry', 'English', 'General Aptitude']
 const DIFFICULTIES = ['Easy', 'Medium', 'Hard', 'Mixed']

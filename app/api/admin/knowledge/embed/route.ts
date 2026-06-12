@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generateAndStoreEmbeddings } from '@/lib/ai/embeddings'
+export const dynamic = 'force-dynamic'
 
 export async function POST() {
   const supabase = createClient()

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
 
 const schema = z.object({
   status: z.enum(['applied', 'written_test', 'medical', 'interview', 'offered', 'rejected']),

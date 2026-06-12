@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin, getSupabase } from '@/lib/supabase/admin-auth'
+export const dynamic = 'force-dynamic'
 
 const VALID_DGS = ['approved', 'pending', 'suspended', 'not_listed', 'flagged']
 

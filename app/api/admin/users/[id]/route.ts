@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin, getSupabase } from '@/lib/supabase/admin-auth'
+export const dynamic = 'force-dynamic'
 
 const VALID_ROLES = ['student', 'college_partner', 'company_partner', 'admin', 'super_admin']
 

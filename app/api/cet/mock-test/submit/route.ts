@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/types'
+export const dynamic = 'force-dynamic'
 
 type CETPerf = Database['public']['Tables']['user_cet_performance']['Row']
 
