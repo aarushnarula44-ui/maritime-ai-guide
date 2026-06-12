@@ -11,7 +11,8 @@ import type { UserProfileSummary } from '@/lib/ai/conversationManager'
 import { getCachedResponse, setCachedResponse, loadResponseCache } from '@/lib/ai/responseCache'
 import { getBudgetStatus, recordUsage, selectModel } from '@/lib/ai/costCircuitBreaker'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+// OpenAI client is instantiated inside the pipeline function to avoid
+// crashing the build when OPENAI_API_KEY is absent during static generation.
 
 // In-memory rate limit store (per-process; fine for edge/serverless)
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
@@ -52,6 +53,8 @@ function makeStream(generator: AsyncGenerator<string>) {
 }
 
 async function* pipeline(req: NextRequest): AsyncGenerator<string> {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+
   // STEP A — Input validation
   let body: { message?: string; sessionId?: string; pageContext?: string; language?: string }
   try {
