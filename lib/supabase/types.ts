@@ -452,21 +452,25 @@ export type Database = {
       fraud_reports: {
         Row: {
           id: string
-          college_id: string
-          user_id: string
-          report_type: string
-          description: string | null
+          college_id: string | null
+          reported_by: string | null
+          fraud_type: 'not_dgs_approved' | 'fee_fraud' | 'fake_placement' | 'other'
+          description: string
+          status: 'pending' | 'investigating' | 'verified' | 'dismissed'
           created_at: string
         }
         Insert: {
           id?: string
-          college_id: string
-          user_id: string
-          report_type: string
-          description?: string | null
+          college_id?: string | null
+          reported_by?: string | null
+          fraud_type: 'not_dgs_approved' | 'fee_fraud' | 'fake_placement' | 'other'
+          description: string
+          status?: 'pending' | 'investigating' | 'verified' | 'dismissed'
           created_at?: string
         }
-        Update: Record<string, never>
+        Update: {
+          status?: 'pending' | 'investigating' | 'verified' | 'dismissed'
+        }
       }
       ai_sessions: {
         Row: {
@@ -684,6 +688,148 @@ export type Database = {
           status?: 'applied' | 'written_test' | 'medical' | 'interview' | 'offered' | 'rejected'
           notes?: string | null
           updated_at?: string
+        }
+      }
+      admin_audit_log: {
+        Row: {
+          id: string
+          admin_id: string
+          action: string
+          table_name: string | null
+          record_id: string | null
+          old_data: Json | null
+          new_data: Json | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          admin_id: string
+          action: string
+          table_name?: string | null
+          record_id?: string | null
+          old_data?: Json | null
+          new_data?: Json | null
+          created_at?: string
+        }
+        Update: Record<string, never>
+      }
+      knowledge_base: {
+        Row: {
+          id: string
+          category: string
+          title: string
+          content: string
+          source_document: string | null
+          source_section: string | null
+          confidence_level: 'high' | 'medium' | 'low' | 'needs_verification'
+          is_active: boolean
+          embedding: unknown | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          category: string
+          title: string
+          content: string
+          source_document?: string | null
+          source_section?: string | null
+          confidence_level?: 'high' | 'medium' | 'low' | 'needs_verification'
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          title?: string
+          content?: string
+          source_document?: string | null
+          source_section?: string | null
+          confidence_level?: 'high' | 'medium' | 'low' | 'needs_verification'
+          is_active?: boolean
+          updated_at?: string
+        }
+      }
+      ai_knowledge_gaps: {
+        Row: {
+          id: string
+          question: string
+          frequency: number
+          is_resolved: boolean
+          last_asked_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          question: string
+          frequency?: number
+          is_resolved?: boolean
+          last_asked_at?: string
+          created_at?: string
+        }
+        Update: {
+          frequency?: number
+          is_resolved?: boolean
+          last_asked_at?: string
+        }
+      }
+      announcements: {
+        Row: {
+          id: string
+          type: 'cet_update' | 'new_circular' | 'sponsorship_open' | 'platform_update'
+          title: string
+          body: string
+          audience: 'all' | 'premium' | 'deck_aspirants' | 'engine_aspirants'
+          is_active: boolean
+          published_at: string | null
+          expires_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          type: 'cet_update' | 'new_circular' | 'sponsorship_open' | 'platform_update'
+          title: string
+          body: string
+          audience?: 'all' | 'premium' | 'deck_aspirants' | 'engine_aspirants'
+          is_active?: boolean
+          published_at?: string | null
+          expires_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          type?: 'cet_update' | 'new_circular' | 'sponsorship_open' | 'platform_update'
+          title?: string
+          body?: string
+          audience?: 'all' | 'premium' | 'deck_aspirants' | 'engine_aspirants'
+          is_active?: boolean
+          published_at?: string | null
+          expires_at?: string | null
+        }
+      }
+      daily_stats: {
+        Row: {
+          id: string
+          date: string
+          new_signups: number
+          eligibility_checks: number
+          ai_messages: number
+          page_views: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          date: string
+          new_signups?: number
+          eligibility_checks?: number
+          ai_messages?: number
+          page_views?: number
+          created_at?: string
+        }
+        Update: {
+          new_signups?: number
+          eligibility_checks?: number
+          ai_messages?: number
+          page_views?: number
         }
       }
     }
