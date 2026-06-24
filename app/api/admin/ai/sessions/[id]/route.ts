@@ -15,7 +15,7 @@ export async function GET(
 
   const { data: session } = await supabase
     .from('ai_sessions')
-    .select('id, created_at, user_id, metadata')
+    .select('id, created_at, user_id')
     .eq('id', id)
     .single()
 
@@ -23,7 +23,7 @@ export async function GET(
 
   const { data: messages } = await supabase
     .from('ai_messages')
-    .select('id, role, content, tokens_used, created_at')
+    .select('id, role, content, created_at')
     .eq('session_id', id)
     .order('created_at')
 

@@ -51,16 +51,12 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const { pathname } = request.nextUrl
 
-  console.log('MIDDLEWARE PATH:', pathname)
-
   // Skip Supabase auth when env vars are not configured yet
   if (!supabaseUrl || supabaseUrl === 'your_supabase_url') {
     return NextResponse.next()
   }
 
   const { supabaseResponse, user, supabase } = await updateSession(request)
-
-  console.log('MIDDLEWARE USER:', user?.id ?? 'null')
 
   if (isAdmin(pathname)) {
     if (!user) {
@@ -72,16 +68,12 @@ export async function middleware(request: NextRequest) {
     }
 
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    console.log('MIDDLEWARE SERVICE_ROLE_KEY present:', !!serviceRoleKey)
-    console.log('MIDDLEWARE USER ID for role check:', user.id)
 
     let role: string | null = null
 
     if (serviceRoleKey && supabaseUrl) {
-      // Direct PostgREST fetch — most reliable in Edge/Node middleware, bypasses RLS
       role = await fetchUserRole(supabaseUrl, serviceRoleKey, user.id)
     } else {
-      // Fallback: use the session-based client (requires RLS self-read policy)
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role')
@@ -91,14 +83,9 @@ export async function middleware(request: NextRequest) {
       role = (profile as { role?: string } | null)?.role ?? null
     }
 
-    console.log('MIDDLEWARE ROLE VALUE:', role ?? 'null')
-
     if (!role || !['admin', 'super_admin'].includes(role)) {
-      console.warn('MIDDLEWARE ACCESS DENIED — role:', role ?? 'null', 'user:', user.id)
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
-
-    console.log('MIDDLEWARE ACCESS GRANTED for role:', role)
   }
 
   if (isProtected(pathname) && !user) {

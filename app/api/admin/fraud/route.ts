@@ -17,6 +17,7 @@ export async function GET() {
       fraud_type,
       description,
       status,
+      admin_notes,
       created_at,
       reported_by,
       colleges (name)
@@ -31,6 +32,7 @@ export async function GET() {
     fraud_type: string
     description: string | null
     status: string
+    admin_notes: string | null
     created_at: string
     reported_by: string | null
     colleges: { name: string } | null
@@ -42,7 +44,7 @@ export async function GET() {
     description: r.description,
     reporter: r.reported_by ? r.reported_by.slice(0, 8) + '…' : 'Anonymous',
     status: r.status,
-    admin_notes: '',
+    admin_notes: r.admin_notes ?? '',
     created_at: r.created_at,
   }))
 

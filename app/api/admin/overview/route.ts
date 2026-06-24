@@ -4,8 +4,6 @@ import { getDailyUsage, getBudgetStatus } from '@/lib/ai/costCircuitBreaker'
 import { format, subDays } from 'date-fns'
 export const dynamic = 'force-dynamic'
 
-export const revalidate = 300 // 5 minute cache
-
 export async function GET(request: Request) {
   const { user, error } = await requireAdmin()
   if (error) return error

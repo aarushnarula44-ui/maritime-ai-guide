@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -10,13 +10,13 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const schema = z.object({
-  email: z.string().email('Please enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email({ message: 'Please enter a valid email' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 })
 
 type FormData = z.infer<typeof schema>
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/dashboard'
@@ -46,7 +46,7 @@ export default function LoginPage() {
     const supabase = createClient()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback?redirect=${redirect}` },
+      options: { redirectTo: `${window.location.origin}/callback?redirect=${redirect}` },
     })
   }
 
@@ -128,5 +128,13 @@ export default function LoginPage() {
         <Link href="/signup" className="text-accent font-medium hover:underline">Sign up</Link>
       </p>
     </>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }

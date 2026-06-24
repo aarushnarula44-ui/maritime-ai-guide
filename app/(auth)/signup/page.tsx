@@ -10,10 +10,10 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const schema = z.object({
-  full_name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email'),
-  phone: z.string().regex(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Indian mobile number'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  full_name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
+  email: z.string().email({ message: 'Please enter a valid email' }),
+  phone: z.string().regex(/^[6-9]\d{9}$/, { message: 'Enter a valid 10-digit Indian mobile number' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
 })
 
 type FormData = z.infer<typeof schema>
@@ -81,7 +81,7 @@ export default function SignupPage() {
     const supabase = createClient()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${window.location.origin}/callback` },
     })
   }
 

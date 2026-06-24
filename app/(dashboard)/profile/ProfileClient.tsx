@@ -271,9 +271,9 @@ function AcademicTab({ initial }: { initial: AcademicProfile | null }) {
         <h4 className="font-medium text-text-primary text-sm">Class 10</h4>
         <div className="grid grid-cols-2 gap-3">
           <div><label className={labelClass}>Board</label><input {...register('board_10')} className={inputClass} placeholder="CBSE, ICSE..." /></div>
-          <div><label className={labelClass}>Year of Passing</label><input type="number" {...register('year_of_passing_10')} className={inputClass} /></div>
-          <div><label className={labelClass}>Overall %</label><input type="number" step="0.01" {...register('aggregate_percentage_10')} className={inputClass} /></div>
-          <div><label className={labelClass}>English %</label><input type="number" step="0.01" {...register('english_percentage_10')} className={inputClass} /></div>
+          <div><label className={labelClass}>Year of Passing</label><input type="number" {...register('year_of_passing_10', { valueAsNumber: true })} className={inputClass} /></div>
+          <div><label className={labelClass}>Overall %</label><input type="number" step="0.01" {...register('aggregate_percentage_10', { valueAsNumber: true })} className={inputClass} /></div>
+          <div><label className={labelClass}>English %</label><input type="number" step="0.01" {...register('english_percentage_10', { valueAsNumber: true })} className={inputClass} /></div>
         </div>
       </div>
 
@@ -283,11 +283,11 @@ function AcademicTab({ initial }: { initial: AcademicProfile | null }) {
           <h4 className="font-medium text-text-primary text-sm">Class 12</h4>
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelClass}>Board</label><input {...register('board_12')} className={inputClass} /></div>
-            <div><label className={labelClass}>Year of Passing</label><input type="number" {...register('year_of_passing_12')} className={inputClass} /></div>
-            <div><label className={labelClass}>Physics %</label><input type="number" step="0.01" {...register('physics_percentage')} className={inputClass} /></div>
-            <div><label className={labelClass}>Chemistry %</label><input type="number" step="0.01" {...register('chemistry_percentage')} className={inputClass} /></div>
-            <div><label className={labelClass}>Maths %</label><input type="number" step="0.01" {...register('maths_percentage')} className={inputClass} /></div>
-            <div><label className={labelClass}>English %</label><input type="number" step="0.01" {...register('english_percentage_12')} className={inputClass} /></div>
+            <div><label className={labelClass}>Year of Passing</label><input type="number" {...register('year_of_passing_12', { valueAsNumber: true })} className={inputClass} /></div>
+            <div><label className={labelClass}>Physics %</label><input type="number" step="0.01" {...register('physics_percentage', { valueAsNumber: true })} className={inputClass} /></div>
+            <div><label className={labelClass}>Chemistry %</label><input type="number" step="0.01" {...register('chemistry_percentage', { valueAsNumber: true })} className={inputClass} /></div>
+            <div><label className={labelClass}>Maths %</label><input type="number" step="0.01" {...register('maths_percentage', { valueAsNumber: true })} className={inputClass} /></div>
+            <div><label className={labelClass}>English %</label><input type="number" step="0.01" {...register('english_percentage_12', { valueAsNumber: true })} className={inputClass} /></div>
           </div>
           {pcmAvg != null && (
             <p className="text-sm text-accent font-semibold">PCM Average: {pcmAvg}%</p>
@@ -301,7 +301,7 @@ function AcademicTab({ initial }: { initial: AcademicProfile | null }) {
           <h4 className="font-medium text-text-primary text-sm">Diploma</h4>
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelClass}>Field/Stream</label><input {...register('diploma_field')} className={inputClass} /></div>
-            <div><label className={labelClass}>Percentage</label><input type="number" step="0.01" {...register('diploma_percentage')} className={inputClass} /></div>
+            <div><label className={labelClass}>Percentage</label><input type="number" step="0.01" {...register('diploma_percentage', { valueAsNumber: true })} className={inputClass} /></div>
           </div>
           <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
             <input type="checkbox" {...register('diploma_english_medium')} className="rounded" />
@@ -316,7 +316,7 @@ function AcademicTab({ initial }: { initial: AcademicProfile | null }) {
           <h4 className="font-medium text-text-primary text-sm">Degree</h4>
           <div className="grid grid-cols-2 gap-3">
             <div><label className={labelClass}>Field/Stream</label><input {...register('degree_field')} className={inputClass} /></div>
-            <div><label className={labelClass}>Percentage</label><input type="number" step="0.01" {...register('degree_percentage')} className={inputClass} /></div>
+            <div><label className={labelClass}>Percentage</label><input type="number" step="0.01" {...register('degree_percentage', { valueAsNumber: true })} className={inputClass} /></div>
             <div className="col-span-2"><label className={labelClass}>University</label><input {...register('degree_university')} className={inputClass} /></div>
           </div>
           <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer">
@@ -581,11 +581,11 @@ export function ProfileClient({
 
   const memberSince = new Date(profile.created_at).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
 
-  async function saveField(name: string, value: string) {
+  async function saveField(name: string, value: string | boolean) {
     const res = await fetch('/api/user/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [name]: value || null }),
+      body: JSON.stringify({ [name]: typeof value === 'boolean' ? value : (value || null) }),
     })
     if (res.ok) {
       const json = await res.json()
@@ -730,7 +730,7 @@ export function ProfileClient({
                   <p className="text-xs text-text-muted">Are you a native of Lakshadweep or A&N Islands from a Scheduled Tribe?</p>
                 </div>
                 <button
-                  onClick={() => saveField('is_island_st_native', String(!profile.is_island_st_native))}
+                  onClick={() => saveField('is_island_st_native', !profile.is_island_st_native)}
                   className={`w-12 h-6 rounded-full transition-colors ${profile.is_island_st_native ? 'bg-accent' : 'bg-border'}`}
                 >
                   <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform mx-0.5 ${profile.is_island_st_native ? 'translate-x-6' : ''}`} />

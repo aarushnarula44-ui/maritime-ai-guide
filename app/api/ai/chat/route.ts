@@ -165,18 +165,18 @@ async function* pipeline(req: NextRequest): AsyncGenerator<string> {
   if (relevantChunks.length === 0 && queryEmbedding.length > 0) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const kb = supabase as any
-    kb.from('ai_knowledge_gaps').select('id, question, asked_count').then(({ data }: { data: { id: string; question: string; asked_count: number }[] | null }) => {
+    kb.from('ai_knowledge_gaps').select('id, question, frequency').then(({ data }: { data: { id: string; question: string; frequency: number }[] | null }) => {
       const existing = data?.find((row) =>
         row.question.toLowerCase() === message.toLowerCase()
       )
       if (existing) {
         kb.from('ai_knowledge_gaps')
-          .update({ asked_count: existing.asked_count + 1, last_asked_at: new Date().toISOString() })
+          .update({ frequency: existing.frequency + 1, last_asked_at: new Date().toISOString() })
           .eq('id', existing.id)
           .then(() => {})
       } else {
         kb.from('ai_knowledge_gaps')
-          .insert({ question: message, asked_count: 1, last_asked_at: new Date().toISOString() })
+          .insert({ question: message, frequency: 1, last_asked_at: new Date().toISOString() })
           .then(() => {})
       }
     })

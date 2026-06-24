@@ -113,7 +113,6 @@ function NavAIQuickChat() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [sessionId, setSessionId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const SUGGESTIONS = ['Am I eligible for B.Sc.?', 'What is IMU CET?', 'Highest paying maritime job?']
@@ -128,12 +127,31 @@ function NavAIQuickChat() {
       const res = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, sessionId }),
+        body: JSON.stringify({ message: text }),
       })
       if (!res.ok) throw new Error('Failed')
-      const json = await res.json()
-      if (json.sessionId) setSessionId(json.sessionId)
-      setMessages((prev) => [...prev, { role: 'assistant', content: json.response ?? json.message ?? '' }])
+
+      const reader = res.body!.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      let fullContent = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const parts = buffer.split('\n\n')
+        buffer = parts.pop() ?? ''
+        for (const part of parts) {
+          if (!part.startsWith('data: ')) continue
+          try {
+            const parsed = JSON.parse(part.slice(6))
+            if (parsed.type === 'chunk') fullContent += parsed.content
+          } catch { /* ignore malformed chunks */ }
+        }
+      }
+
+      setMessages((prev) => [...prev, { role: 'assistant', content: fullContent || 'No response received.' }])
     } catch {
       setMessages((prev) => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }])
     } finally {

@@ -56,7 +56,7 @@ function checkRateLimit(key: string, maxRequests: number): { allowed: boolean; r
 
 export async function POST(req: NextRequest) {
   // Auth check
-  const supabase = await createClient()
+  const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   // Rate limiting
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
   const parsed = ProfileSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+      { error: 'Validation failed', details: parsed.error.issues },
       { status: 400 }
     )
   }
@@ -103,11 +103,10 @@ export async function POST(req: NextRequest) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await (supabase as any).from('eligibility_checks').insert({
         user_id: user.id,
-        eligibility_score: report.eligibilityScore,
+        score: report.eligibilityScore,
         eligible_course_ids: report.eligibleCourses.map((c) => c.courseId),
-        borderline_course_ids: report.borderlineCourses.map((c) => c.courseId),
-        profile_snapshot: profile as unknown as Record<string, unknown>,
-        generated_at: report.generatedAt.toISOString(),
+        results: report.eligibleCourses.map((c) => c.courseId),
+        input_data: profile as unknown as Record<string, unknown>,
       })
     } catch {
       // Non-fatal: table may not exist yet or RLS may block

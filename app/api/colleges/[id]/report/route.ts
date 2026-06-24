@@ -21,8 +21,8 @@ export async function POST(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any).from('fraud_reports').insert({
       college_id: params.id,
-      user_id: user.id,
-      report_type: reportType,
+      reported_by: user.id,
+      fraud_type: reportType,
       description: description || null,
     })
 

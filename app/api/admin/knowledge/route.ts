@@ -116,9 +116,12 @@ export async function POST(request: Request) {
     new_data: body,
   })
 
-  void fetch(`${process.env.NEXT_PUBLIC_SITE_URL ?? ''}/api/admin/knowledge/embed`, {
+  void fetch(`${process.env.NEXT_PUBLIC_APP_URL ?? ''}/api/admin/knowledge/embed`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''}`,
+    },
   }).catch(() => {})
 
   return NextResponse.json({ id: newId })

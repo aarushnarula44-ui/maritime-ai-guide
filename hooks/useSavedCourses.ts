@@ -28,6 +28,7 @@ export function useSavedCourses() {
       localStorage.setItem(KEY, JSON.stringify(next))
       return next
     })
+    fetch(`/api/courses/${courseId}/save`, { method: 'POST' }).catch(() => {})
   }, [])
 
   const isSaved = useCallback(

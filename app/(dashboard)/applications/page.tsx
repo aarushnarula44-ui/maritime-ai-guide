@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/Button'
 import { X, Plus } from 'lucide-react'
-export const dynamic = 'force-dynamic'
-
 type AppStatus = 'applied' | 'written_test' | 'medical' | 'interview' | 'offered' | 'rejected'
 
 interface Application {

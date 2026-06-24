@@ -22,7 +22,7 @@ export async function PATCH(
     'last_verified_at', 'expires_at',
   ]
   for (const key of allowed) {
-    if (key in body) updateData[key] = body[key] || null
+    if (key in body) updateData[key] = body[key] ?? null
   }
 
   const { error: updateError } = await db.from('knowledge_base').update(updateData).eq('id', id)
@@ -37,8 +37,12 @@ export async function PATCH(
   })
 
   // Trigger re-embedding in background
-  void fetch(`${process.env.NEXT_PUBLIC_SITE_URL ?? ''}/api/admin/knowledge/embed`, {
+  void fetch(`${process.env.NEXT_PUBLIC_APP_URL ?? ''}/api/admin/knowledge/embed`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''}`,
+    },
   }).catch(() => {})
 
   return NextResponse.json({ success: true })

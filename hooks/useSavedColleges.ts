@@ -28,6 +28,7 @@ export function useSavedColleges() {
       localStorage.setItem(KEY, JSON.stringify(next))
       return next
     })
+    fetch(`/api/colleges/${collegeId}/save`, { method: 'POST' }).catch(() => {})
   }, [])
 
   const isSaved = useCallback(

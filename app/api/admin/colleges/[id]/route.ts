@@ -23,14 +23,13 @@ export async function PATCH(
 
   const { data: oldCollege } = await supabase
     .from('colleges')
-    .select('name, dgs_approval_status, city, state, website, phone, email, is_partner, is_active')
+    .select('name, dgs_approval_status, city, state, is_partner, is_active')
     .eq('id', id)
     .single()
 
   const allowed = [
     'name', 'dgs_approval_status', 'city', 'state',
-    'website', 'phone', 'email', 'address',
-    'is_partner', 'is_active',
+    'address', 'is_partner', 'is_active',
   ]
   const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() }
   for (const key of allowed) {

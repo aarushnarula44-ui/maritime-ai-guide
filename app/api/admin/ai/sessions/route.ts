@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 
   const { data, count } = await supabase
     .from('ai_sessions')
-    .select('id, created_at, session_type, metadata', { count: 'exact' })
+    .select('id, created_at, session_type', { count: 'exact' })
     .eq('session_type', 'navai_chat')
     .order('created_at', { ascending: false })
     .range((page - 1) * pageSize, page * pageSize - 1)
@@ -36,13 +36,12 @@ export async function GET(request: Request) {
   const sessions = ((data ?? []) as {
     id: string
     created_at: string
-    metadata: Record<string, unknown> | null
   }[]).map((s) => ({
     id: s.id,
     created_at: s.created_at,
     message_count: msgCountMap[s.id] ?? 0,
-    avg_response_ms: (s.metadata?.avg_response_ms as number) ?? null,
-    user_satisfaction: (s.metadata?.user_satisfaction as number) ?? null,
+    avg_response_ms: null,
+    user_satisfaction: null,
   }))
 
   // Stats

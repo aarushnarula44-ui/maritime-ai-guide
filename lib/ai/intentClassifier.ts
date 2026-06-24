@@ -30,7 +30,7 @@ export function containsInjection(message: string): boolean {
   return INJECTION_PATTERNS.some((p) => lower.includes(p))
 }
 
-export function isMritimeRelated(message: string): boolean {
+export function isMaritimeRelated(message: string): boolean {
   const lower = message.toLowerCase()
   return MARITIME_KEYWORDS.some((k) => lower.includes(k))
 }
@@ -42,11 +42,11 @@ export function classifyIntent(message: string): IntentType {
 
   if (ELIGIBILITY_KEYWORDS.some((k) => lower.includes(k))) return 'eligibility_query'
 
-  if (FACTUAL_KEYWORDS.some((k) => lower.includes(k)) && isMritimeRelated(message)) {
+  if (FACTUAL_KEYWORDS.some((k) => lower.includes(k)) && isMaritimeRelated(message)) {
     return 'factual_lookup'
   }
 
-  if (isMritimeRelated(message)) return 'conversational'
+  if (isMaritimeRelated(message)) return 'conversational'
 
   return 'out_of_scope'
 }
