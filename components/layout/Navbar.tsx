@@ -63,9 +63,14 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Anchor className={`w-6 h-6 ${scrolled ? 'text-accent' : 'text-accent'}`} />
-            <span className={`font-display font-semibold text-lg ${scrolled ? 'text-primary' : 'text-white'}`}>
-              Maritime AI Guide
-            </span>
+            <div className="flex flex-col leading-tight">
+              <span className={`font-display font-semibold text-lg ${scrolled ? 'text-primary' : 'text-white'}`}>
+                Maritime AI Guide
+              </span>
+              <span className={`text-[10px] font-medium tracking-wide ${scrolled ? 'text-text-muted' : 'text-blue-200'}`}>
+                Made by Aarush Narula
+              </span>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -180,7 +185,10 @@ export default function Navbar() {
             <div className="flex items-center justify-between p-5 border-b border-border">
               <div className="flex items-center gap-2">
                 <Anchor className="w-5 h-5 text-accent" />
-                <span className="font-display font-semibold text-primary">Maritime AI Guide</span>
+                <div className="flex flex-col leading-tight">
+                  <span className="font-display font-semibold text-primary">Maritime AI Guide</span>
+                  <span className="text-[10px] font-medium text-text-muted tracking-wide">Made by Aarush Narula</span>
+                </div>
               </div>
               <button onClick={() => setMobileOpen(false)}>
                 <X className="w-5 h-5 text-text-muted" />
