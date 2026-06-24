@@ -16,6 +16,7 @@ let memoryCache: KnowledgeChunk[] | null = null
 let memoryCacheAt: number | null = null // eslint-disable-line @typescript-eslint/no-unused-vars
 
 async function getKV() {
+  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) return null
   try {
     const { kv } = await import('@vercel/kv')
     return kv

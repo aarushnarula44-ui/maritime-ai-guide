@@ -3,7 +3,7 @@ import './globals.css'
 import NavAIWidget from '@/components/ui/NavAIWidget'
 import EligibilityCacheInit from '@/components/ui/EligibilityCacheInit'
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://maritimeaiguide.in'
+const BASE_URL = (process.env.NEXT_PUBLIC_APP_URL || 'https://maritime-ai-guide.vercel.app').replace(/\/$/, '')
 
 export const metadata: Metadata = {
   title: 'Maritime AI Guide — India\'s #1 Merchant Navy Career Platform',
@@ -72,6 +72,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <NavAIWidget />
         <EligibilityCacheInit />
+        <p style={{ textAlign: 'center', fontSize: '11px', color: '#9ca3af', padding: '8px 0 12px', margin: 0 }}>
+          Made by Aarush Narula
+        </p>
       </body>
     </html>
   )

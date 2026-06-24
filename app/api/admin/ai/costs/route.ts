@@ -17,11 +17,13 @@ export async function GET() {
   // 7-day history from KV (best effort — store daily keys)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let kv: any | null = null
-  try {
-    const mod = await import('@vercel/kv')
-    kv = mod.kv
-  } catch {
-    kv = null
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    try {
+      const mod = await import('@vercel/kv')
+      kv = mod.kv
+    } catch {
+      kv = null
+    }
   }
 
   const sevenDayHistory: { date: string; cost: number }[] = []

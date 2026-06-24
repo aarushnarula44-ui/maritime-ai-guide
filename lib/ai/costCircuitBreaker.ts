@@ -11,6 +11,7 @@ function todayKey(): string {
 }
 
 async function getKV() {
+  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) return null
   try {
     const { kv } = await import('@vercel/kv')
     return kv
