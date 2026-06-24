@@ -81,7 +81,7 @@ export default function Navbar() {
                 className={`text-sm font-medium transition-colors ${
                   pathname === link.href
                     ? 'text-accent underline underline-offset-4'
-                    : scrolled ? 'text-text-secondary hover:text-primary' : 'text-blue-100 hover:text-white'
+                    : scrolled ? 'text-primary hover:text-accent' : 'text-blue-100 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -92,7 +92,7 @@ export default function Navbar() {
                 onClick={() => setResourcesOpen(!resourcesOpen)}
                 onBlur={() => setTimeout(() => setResourcesOpen(false), 150)}
                 className={`flex items-center gap-1 text-sm font-medium transition-colors ${
-                  scrolled ? 'text-text-secondary hover:text-primary' : 'text-blue-100 hover:text-white'
+                  scrolled ? 'text-primary hover:text-accent' : 'text-blue-100 hover:text-white'
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
@@ -162,7 +162,7 @@ export default function Navbar() {
                   scrolled ? 'border-border text-text-primary hover:bg-surface' : 'border-white/30 text-white hover:bg-white/10'
                 }`}>Sign Up</Link>
                 <Link href="/login" className={`text-sm font-medium transition ${
-                  scrolled ? 'text-text-secondary hover:text-primary' : 'text-blue-100 hover:text-white'
+                  scrolled ? 'text-primary hover:text-accent' : 'text-blue-100 hover:text-white'
                 }`}>Log In</Link>
               </>
             )}
