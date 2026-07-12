@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import OpenAI from 'openai'
 import { createClient } from '@/lib/supabase/server'
-import { containsInjection, classifyIntent } from '@/lib/ai/intentClassifier'
+import { containsInjection, containsCreatorQuestion, classifyIntent } from '@/lib/ai/intentClassifier'
 import { generateEmbedding } from '@/lib/ai/embeddings'
 import { getKnowledgeFromCache } from '@/lib/ai/knowledgeCache'
 import { retrieveRelevantChunks, formatChunksAsContext } from '@/lib/ai/rag'
@@ -75,6 +75,12 @@ async function* pipeline(req: NextRequest): AsyncGenerator<string> {
 
   if (containsInjection(message)) {
     yield sseChunk({ type: 'chunk', content: 'I am NavAI, your maritime career advisor. I can only help with maritime career questions in India.' })
+    yield sseChunk({ type: 'done' })
+    return
+  }
+
+  if (containsCreatorQuestion(message)) {
+    yield sseChunk({ type: 'chunk', content: 'Maritime AI Guide was made by Aarush Narula.' })
     yield sseChunk({ type: 'done' })
     return
   }

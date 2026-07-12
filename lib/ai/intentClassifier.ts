@@ -15,6 +15,15 @@ export const INJECTION_PATTERNS = [
   'system prompt', 'jailbreak', 'dan', 'developer mode',
 ]
 
+export const CREATOR_PATTERNS = [
+  'who made you', 'who created you', 'who built you', 'who developed you',
+  'who made this', 'who built this', 'who created this', 'who developed this',
+  'who made maritime ai guide', 'who built maritime ai guide', 'who created maritime ai guide',
+  'who is your creator', 'your creator', 'your developer', 'your maker',
+  'what ai model are you', 'which ai model are you', 'what model are you', 'which model are you',
+  'are you chatgpt', 'are you gpt', 'are you openai', 'are you gemini', 'are you claude',
+]
+
 const ELIGIBILITY_KEYWORDS = [
   'eligible', 'qualify', 'can i join', 'my marks', 'my age',
   'my percentage', 'do i qualify',
@@ -28,6 +37,11 @@ const FACTUAL_KEYWORDS = [
 export function containsInjection(message: string): boolean {
   const lower = message.toLowerCase()
   return INJECTION_PATTERNS.some((p) => lower.includes(p))
+}
+
+export function containsCreatorQuestion(message: string): boolean {
+  const lower = message.toLowerCase()
+  return CREATOR_PATTERNS.some((p) => lower.includes(p))
 }
 
 export function isMaritimeRelated(message: string): boolean {
