@@ -396,7 +396,6 @@ function ContextPanel({ messages }: { messages: ChatMessage[] }) {
             <span className="font-medium text-primary">{r.range}</span>
           </div>
         ))}
-        <a href="/salaries" className="mt-2 text-xs text-accent hover:underline block">Full salary guide →</a>
       </div>,
     )
   }

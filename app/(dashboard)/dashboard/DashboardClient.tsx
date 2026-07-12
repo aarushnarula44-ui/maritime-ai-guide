@@ -344,7 +344,6 @@ export function DashboardClient({ unreadNotifications }: { unreadNotifications: 
     { label: 'Check Eligibility', icon: '✅', href: '/eligibility' },
     { label: 'Find Colleges', icon: '🏫', href: '/colleges' },
     { label: 'CET Practice', icon: '📝', href: '/cet/practice' },
-    { label: 'Salary Explorer', icon: '💰', href: '/salaries' },
     { label: 'Sponsorships', icon: '🚢', href: '/sponsorships' },
     { label: 'Career Roadmap', icon: '🗺️', href: '/roadmap' },
   ]

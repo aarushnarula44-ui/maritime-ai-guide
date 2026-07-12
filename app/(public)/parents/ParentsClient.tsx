@@ -114,11 +114,6 @@ export function ParentsClient() {
           <p className="text-xs text-text-muted text-center mt-3">
             USD salaries. Tax benefit for qualifying NRI seafarers under Section 5 & 9 of the Income Tax Act.
           </p>
-          <div className="text-center mt-4">
-            <Link href="/salary" className="text-sm text-accent font-semibold hover:underline">
-              See full salary data by rank →
-            </Link>
-          </div>
         </div>
 
         {/* REPUTABLE COMPANIES */}

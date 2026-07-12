@@ -16,14 +16,12 @@ const PAGE_GREETINGS: Record<string, string> = {
   '/eligibility': 'I can explain any eligibility rule',
   '/colleges': 'I can check DGS status or compare colleges',
   '/courses': 'Ask me about any maritime course',
-  '/salaries': 'Ask me about salary for any rank or vessel type',
 }
 
 const PAGE_CHIPS: Record<string, string[]> = {
   '/eligibility': ['What is the age limit?', 'PCM requirement?', 'Medical standards?'],
   '/colleges': ['Is this college DGS approved?', 'IMU vs private college?', 'Best colleges?'],
   '/courses': ['DNS vs B.Sc.?', 'Which course is faster?', 'Course fees?'],
-  '/salaries': ['Captain salary?', 'Entry-level pay?', 'Salary growth path?'],
 }
 
 const DEFAULT_CHIPS = ['Am I eligible?', 'Course guide', 'IMU CET info']

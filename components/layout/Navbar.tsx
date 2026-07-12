@@ -13,7 +13,6 @@ const NAV_LINKS = [
   { href: '/courses', label: 'Courses' },
   { href: '/colleges', label: 'Colleges' },
   { href: '/parents', label: 'For Parents' },
-  { href: '/salary', label: 'Salaries' },
 ]
 
 const RESOURCES_LINKS = [
