@@ -53,46 +53,46 @@ export default function LandingPage() {
         <div className="absolute top-20 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-64 h-64 bg-blue-500/10 rounded-full blur-2xl" />
 
-        <div className="relative max-w-7xl mx-auto px-4 pt-24 pb-16 grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-10 md:pt-24 md:pb-16 grid md:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in">
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex flex-wrap gap-2 mb-4 md:mb-6">
               <span className="flex items-center gap-1 text-xs bg-white/10 text-blue-200 border border-white/20 rounded-full px-3 py-1">
                 <Shield className="w-3 h-3" /> Based on Official DGS Circular 2020
               </span>
               <span className="flex items-center gap-1 text-xs bg-white/10 text-blue-200 border border-white/20 rounded-full px-3 py-1">
                 <Zap className="w-3 h-3" /> AI-Powered Guidance
               </span>
-              <span className="flex items-center gap-1 text-xs bg-white/10 text-blue-200 border border-white/20 rounded-full px-3 py-1">
+              <span className="hidden sm:flex items-center gap-1 text-xs bg-white/10 text-blue-200 border border-white/20 rounded-full px-3 py-1">
                 <Trophy className="w-3 h-3" /> 8 Maritime Career Paths
               </span>
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-3 md:mb-4">
               Your Merchant Navy Career{' '}
               <span className="text-accent">Starts Here.</span>
             </h1>
 
-            <p className="text-blue-200 text-lg md:text-xl mb-8 leading-relaxed">
+            <p className="text-blue-200 text-lg md:text-xl mb-4 md:mb-8 leading-relaxed">
               India&apos;s first AI-powered maritime career platform. Know your eligibility in 60 seconds.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 mb-4 md:mb-8">
               <Link
                 href="/eligibility"
-                className="flex items-center justify-center gap-2 bg-accent text-primary font-bold py-4 px-8 rounded-full hover:bg-accent-dark transition text-base"
+                className="flex items-center justify-center gap-2 bg-accent text-primary font-bold py-3 md:py-4 px-8 rounded-full hover:bg-accent-dark transition text-base"
               >
                 Check My Eligibility Free <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href="#how-it-works"
-                className="flex items-center justify-center gap-2 border border-white/30 text-white py-4 px-8 rounded-full hover:bg-white/10 transition text-base"
+                className="flex items-center justify-center gap-2 border border-white/30 text-white py-3 md:py-4 px-8 rounded-full hover:bg-white/10 transition text-base"
               >
                 How It Works ↓
               </a>
             </div>
 
             <p className="text-blue-300 text-sm">
-              47,000+ aspirants guided · Trusted by DGS guidelines
+              A guide for over 70,000+ Aspirants & Parents on joining the Merchant Navy
             </p>
           </div>
 
