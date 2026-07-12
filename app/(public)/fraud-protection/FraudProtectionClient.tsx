@@ -22,14 +22,14 @@ const WARNING_SIGNS = [
   { icon: '🚨', title: 'Promises 100% job guarantee', desc: 'No legitimate institute can guarantee 100% placement. This is a major red flag.' },
   { icon: '💵', title: 'Asks for cash payment only', desc: 'Always pay fees by bank transfer or demand draft. Never pay cash without a receipt.' },
   { icon: '📄', title: 'Cannot show DGS approval certificate', desc: 'Any DGS-approved MTI must display their approval certificate prominently.' },
-  { icon: '🔍', title: 'Not on the official DGS approved MTI list', desc: 'Check dgshipping.gov.in for the official list of Maritime Training Institutes.' },
+  { icon: '🔍', title: 'Not on the official DGS approved MTI list', desc: 'Check dgma.gov.in for the official list of Maritime Training Institutes.' },
   { icon: '💰', title: 'Charges unusually high or low fees', desc: 'Fees well below or far above market rates can signal fraud or poor quality.' },
   { icon: '⏰', title: 'Pressures you to decide immediately', desc: 'Legitimate institutes give you time to verify. High pressure = red flag.' },
 ]
 
 const VERIFY_STEPS = [
   { step: 1, title: 'Check our college database above', desc: 'Search for the college name in our verifier tool.' },
-  { step: 2, title: 'Visit dgshipping.gov.in official website', desc: 'The official DGS website lists all approved Maritime Training Institutes.' },
+  { step: 2, title: 'Visit dgma.gov.in official website', desc: 'The official DGS website lists all approved Maritime Training Institutes.' },
   { step: 3, title: 'Look for DGS approval certificate at the institute', desc: 'Visit the campus and ask to see the original DGS approval certificate.' },
   { step: 4, title: 'Verify approval number with DGS directly', desc: 'Call or email DGS to confirm the approval number is genuine.' },
   { step: 5, title: 'Never pay fees before verification', desc: 'Complete all verification steps before paying any fees whatsoever.' },
@@ -87,7 +87,7 @@ export function FraudProtectionClient({ colleges }: Props) {
             <p className="font-semibold text-red-800">{college.name}</p>
             <p className="text-sm text-red-700">{college.city}, {college.state}</p>
             <p className="text-sm text-red-700 font-medium mt-1">⚠️ {college.dgs_approval_status === 'flagged' ? 'Flagged for review' : college.dgs_approval_status === 'suspended' ? 'Approval suspended' : 'Not on DGS approved list'}</p>
-            <p className="text-xs text-red-600 mt-1">Verify directly at dgshipping.gov.in before enrolling.</p>
+            <p className="text-xs text-red-600 mt-1">Verify directly at dgma.gov.in before enrolling.</p>
           </div>
         </div>
       )
@@ -98,7 +98,7 @@ export function FraudProtectionClient({ colleges }: Props) {
         <div>
           <p className="font-semibold text-amber-800">{college.name}</p>
           <p className="text-sm text-amber-700">Approval status: {college.dgs_approval_status}</p>
-          <p className="text-xs text-amber-700 mt-1">Verify directly at dgshipping.gov.in</p>
+          <p className="text-xs text-amber-700 mt-1">Verify directly at dgma.gov.in</p>
         </div>
       </div>
     )
@@ -146,8 +146,8 @@ export function FraudProtectionClient({ colleges }: Props) {
                     <p className="font-semibold text-amber-800">Not found in our database</p>
                     <p className="text-sm text-amber-700 mt-1">
                       Verify directly at{' '}
-                      <a href="https://dgshipping.gov.in" target="_blank" rel="noopener noreferrer" className="underline font-medium">
-                        dgshipping.gov.in
+                      <a href="https://dgma.gov.in" target="_blank" rel="noopener noreferrer" className="underline font-medium">
+                        dgma.gov.in
                       </a>{' '}
                       before enrolling.
                     </p>
@@ -271,14 +271,14 @@ export function FraudProtectionClient({ colleges }: Props) {
           <p className="text-blue-200 text-sm mb-4">Always verify using official government sources.</p>
           <div className="space-y-3">
             <a
-              href="https://dgshipping.gov.in"
+              href="https://dgma.gov.in"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between p-4 bg-white/10 rounded-xl hover:bg-white/20 transition"
             >
               <div>
                 <p className="font-semibold text-sm">DGS Official Website</p>
-                <p className="text-blue-300 text-xs">dgshipping.gov.in</p>
+                <p className="text-blue-300 text-xs">dgma.gov.in</p>
               </div>
               <ExternalLink className="w-4 h-4 text-blue-300" />
             </a>
@@ -291,6 +291,18 @@ export function FraudProtectionClient({ colleges }: Props) {
               <div>
                 <p className="font-semibold text-sm">IMU Official Website</p>
                 <p className="text-blue-300 text-xs">imu.edu.in</p>
+              </div>
+              <ExternalLink className="w-4 h-4 text-blue-300" />
+            </a>
+            <a
+              href="https://dgma.gov.in/training-branch/training-branch-list-of-approved-mti"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between p-4 bg-white/10 rounded-xl hover:bg-white/20 transition"
+            >
+              <div>
+                <p className="font-semibold text-sm">List of DGS-Approved MTIs</p>
+                <p className="text-blue-300 text-xs">dgma.gov.in</p>
               </div>
               <ExternalLink className="w-4 h-4 text-blue-300" />
             </a>
