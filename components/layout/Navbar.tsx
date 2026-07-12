@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Anchor, Menu, X, ChevronDown, LogOut, User, Settings, LayoutDashboard, Sparkles, BookOpen } from 'lucide-react'
+import { ShipWheel, Menu, X, ChevronDown, LogOut, User, Settings, LayoutDashboard, Sparkles, BookOpen } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { GlobalSearch } from '@/components/layout/GlobalSearch'
@@ -20,6 +20,7 @@ const RESOURCES_LINKS = [
   { href: '/medical', label: 'Medical Requirements' },
   { href: '/fraud-protection', label: 'Fraud Protection' },
   { href: '/cet', label: 'CET Prep' },
+  { href: '/dgs-guidelines', label: 'DGS Guidelines' },
 ]
 
 export default function Navbar() {
@@ -60,7 +61,7 @@ export default function Navbar() {
       }`}>
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Anchor className={`w-6 h-6 ${scrolled ? 'text-accent' : 'text-accent'}`} />
+            <ShipWheel className={`w-6 h-6 ${scrolled ? 'text-accent' : 'text-accent'}`} />
             <div className="flex flex-col leading-tight">
               <span className={`font-display font-semibold text-lg ${scrolled ? 'text-primary' : 'text-white'}`}>
                 Maritime AI Guide
@@ -181,7 +182,7 @@ export default function Navbar() {
           <div className="w-72 bg-white h-full flex flex-col animate-slide-in-right">
             <div className="flex items-center justify-between p-5 border-b border-border">
               <div className="flex items-center gap-2">
-                <Anchor className="w-5 h-5 text-accent" />
+                <ShipWheel className="w-5 h-5 text-accent" />
                 <div className="flex flex-col leading-tight">
                   <span className="font-display font-semibold text-primary">Maritime AI Guide</span>
                   <span className="text-[10px] font-medium text-text-muted tracking-wide">Made by Aarush Narula</span>

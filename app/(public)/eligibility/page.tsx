@@ -4,13 +4,12 @@ import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import {
   BookOpen, GraduationCap, Award, Building2, ArrowLeft, ArrowRight,
-  CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, Heart, Anchor
+  CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, Heart, ShipWheel
 } from 'lucide-react'
 import Link from 'next/link'
 import {
   runEligibilityCheck, COURSE_RULES, type UserProfile, type EligibilityReport, type EligibilityResult,
 } from '@/lib/eligibility/engine'
-import EmailCaptureGate from '@/components/eligibility/EmailCaptureGate'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -215,7 +214,6 @@ function EligibilityWizardInner() {
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [showNotEligible, setShowNotEligible] = useState(false)
-  const [emailCaptured, setEmailCaptured] = useState(false)
 
   // Pre-fill from query params (landing page mini-wizard)
   useEffect(() => {
@@ -367,7 +365,6 @@ function EligibilityWizardInner() {
   }
 
   if (report) {
-    const showGate = !emailCaptured && report.eligibleCourses.length + report.borderlineCourses.length > 2
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary via-primary-light to-[#0D2444] py-10 px-4">
         <div className="max-w-2xl mx-auto">
@@ -404,23 +401,14 @@ function EligibilityWizardInner() {
                 <CheckCircle className="w-5 h-5 text-success" />
                 <h2 className="font-display font-semibold text-white text-lg">Courses You Can Apply For Right Now</h2>
               </div>
-              {(showGate ? report.eligibleCourses.slice(0, 2) : report.eligibleCourses).map((r) => (
+              {report.eligibleCourses.map((r) => (
                 <CourseCard key={r.courseId} result={r} borderColor="border-l-success" />
               ))}
             </div>
           )}
 
-          {/* Email gate */}
-          {showGate && (
-            <EmailCaptureGate
-              score={report.eligibilityScore}
-              eligibleCount={report.eligibleCourses.length}
-              onUnlock={() => setEmailCaptured(true)}
-            />
-          )}
-
           {/* Borderline courses */}
-          {!showGate && report.borderlineCourses.length > 0 && (
+          {report.borderlineCourses.length > 0 && (
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-3">
                 <AlertCircle className="w-5 h-5 text-warning" />
@@ -433,7 +421,7 @@ function EligibilityWizardInner() {
           )}
 
           {/* Not eligible — collapsed */}
-          {!showGate && report.notEligibleCourses.length > 0 && (
+          {report.notEligibleCourses.length > 0 && (
             <div className="mb-4">
               <button
                 onClick={() => setShowNotEligible((v) => !v)}
@@ -504,7 +492,7 @@ function EligibilityWizardInner() {
               </button>
             ) : (
               <Link href="/" className="flex items-center gap-1 text-sm text-text-secondary hover:text-primary transition">
-                <Anchor className="w-4 h-4" /> Home
+                <ShipWheel className="w-4 h-4" /> Home
               </Link>
             )}
             <span className="text-xs text-text-muted font-medium">Step {step} of {totalSteps}</span>

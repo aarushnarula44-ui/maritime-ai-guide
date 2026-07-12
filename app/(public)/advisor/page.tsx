@@ -246,7 +246,7 @@ export default function AdvisorPage() {
                 <Sparkles className="w-8 h-8 text-accent" />
               </div>
               <h2 className="font-display text-2xl font-bold text-primary mb-1">Hi! I am NavAI. 👋</h2>
-              <p className="text-text-secondary mb-1">I know the official DGS maritime guidelines inside out.</p>
+              <p className="text-text-secondary mb-1">Ask me anything about the DGS maritime guidelines</p>
               <p className="text-text-secondary mb-8">Ask me anything about your maritime career.</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-2xl">
                 {STARTER_CARDS.map((card) => (

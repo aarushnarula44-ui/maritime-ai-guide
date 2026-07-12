@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Anchor } from 'lucide-react'
+import { ShipWheel } from 'lucide-react'
 
 const COURSES = [
   { href: '/courses/bsc-nautical-science', label: 'B.Sc. Nautical Science' },
@@ -18,6 +18,7 @@ const RESOURCES = [
   { href: '/medical', label: 'Medical Requirements' },
   { href: '/fraud-protection', label: 'Fraud Protection' },
   { href: '/parents', label: 'For Parents' },
+  { href: '/dgs-guidelines', label: 'DGS Guidelines' },
 ]
 
 const COMPANY = [
@@ -34,7 +35,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Anchor className="w-5 h-5 text-accent" />
+              <ShipWheel className="w-5 h-5 text-accent" />
               <span className="font-display font-semibold">Maritime AI Guide</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-3">

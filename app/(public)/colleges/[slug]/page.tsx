@@ -3,23 +3,29 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import * as Tabs from '@radix-ui/react-tabs'
 import { createClient } from '@/lib/supabase/server'
-import { STATIC_COLLEGES, STATIC_COLLEGE_COURSES, STATIC_COURSES } from '@/lib/static-data'
+import { STATIC_COLLEGES } from '@/lib/static-data'
 import { ReviewForm } from '@/components/colleges/ReviewForm'
 import { FraudReportModalTrigger } from '@/components/colleges/FraudReportModalTrigger'
 import { Shield, MapPin, Star, ExternalLink, Phone, Mail, AlertTriangle, ChevronRight, CheckCircle } from 'lucide-react'
 import type { StaticCollege } from '@/lib/static-data'
 
-export const revalidate = 21600
-
-export async function generateStaticParams() {
-  return STATIC_COLLEGES.map((c) => ({ slug: c.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
+  try {
+    const supabase = createClient()
+    const { data } = await supabase.from('colleges').select('name,description').eq('slug', params.slug).single()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const row = data as any
+    if (row) return {
+      title: `${row.name} — Reviews, Fees & Courses | Maritime AI Guide`,
+      description: row.description ?? undefined,
+    }
+  } catch { /* fall through */ }
   const college = STATIC_COLLEGES.find((c) => c.slug === params.slug)
   if (!college) return { title: 'College Not Found' }
   return {
@@ -31,15 +37,36 @@ export async function generateMetadata({
 async function getCollege(slug: string): Promise<StaticCollege | null> {
   try {
     const supabase = createClient()
-    const { data, error } = await supabase
-      .from('colleges')
-      .select('*')
-      .eq('slug', slug)
-      .single()
+    const { data, error } = await supabase.from('colleges').select('*').eq('slug', slug).single()
     if (error || !data) return STATIC_COLLEGES.find((c) => c.slug === slug) ?? null
-    return data as StaticCollege
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const raw = data as any
+    return { ...raw, rating_avg: raw.rating_avg != null ? Number(raw.rating_avg) : null } as StaticCollege
   } catch {
     return STATIC_COLLEGES.find((c) => c.slug === slug) ?? null
+  }
+}
+
+interface CourseRow { slug: string; name: string; department: string; duration_display: string }
+interface CollegeCourseRow { annual_fee_inr: number; seats: number | null; admission_type: string; courses: CourseRow | null }
+
+async function getCollegeCourses(collegeId: string): Promise<CollegeCourseRow[]> {
+  try {
+    const supabase = createClient()
+    const { data } = await supabase
+      .from('college_courses')
+      .select('annual_fee_inr, seats, admission_type, courses(slug, name, department, duration_display)')
+      .eq('college_id', collegeId)
+      .eq('is_active', true)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return ((data ?? []) as any[]).map((cc) => ({
+      annual_fee_inr: cc.annual_fee_inr ?? 0,
+      seats: cc.seats ?? null,
+      admission_type: cc.admission_type ?? '',
+      courses: cc.courses ?? null,
+    }))
+  } catch {
+    return []
   }
 }
 
@@ -87,11 +114,7 @@ export default async function CollegeDetailPage({ params }: { params: { slug: st
   const statusColor = STATUS_COLORS[college.dgs_approval_status] ?? '#94A3B8'
   const statusLabel = STATUS_LABELS[college.dgs_approval_status] ?? college.dgs_approval_status
 
-  const collegeCourses = STATIC_COLLEGE_COURSES.filter((cc) => cc.college_slug === college.slug)
-  const coursesWithDetails = collegeCourses.map((cc) => ({
-    ...cc,
-    course: STATIC_COURSES.find((c) => c.slug === cc.course_slug),
-  })).filter((x) => x.course)
+  const coursesWithDetails = await getCollegeCourses(college.id)
 
   return (
     <main className="min-h-screen">
@@ -229,29 +252,29 @@ export default async function CollegeDetailPage({ params }: { params: { slug: st
                     </tr>
                   </thead>
                   <tbody>
-                    {coursesWithDetails.map((cc) => (
-                      <tr key={cc.course_slug} className="border-b border-border hover:bg-surface transition">
+                    {coursesWithDetails.map((cc, i) => (
+                      <tr key={cc.courses?.slug ?? i} className="border-b border-border hover:bg-surface transition">
                         <td className="py-3 pr-4">
                           <Link
-                            href={`/courses/${cc.course_slug}`}
+                            href={`/courses/${cc.courses?.slug ?? ''}`}
                             className="font-medium text-primary hover:text-accent transition"
                           >
-                            {cc.course?.name}
+                            {cc.courses?.name}
                           </Link>
                         </td>
-                        <td className="py-3 pr-4 capitalize text-text-secondary">{cc.course?.department}</td>
-                        <td className="py-3 pr-4 text-text-secondary">{cc.course?.duration_display}</td>
+                        <td className="py-3 pr-4 capitalize text-text-secondary">{cc.courses?.department}</td>
+                        <td className="py-3 pr-4 text-text-secondary">{cc.courses?.duration_display}</td>
                         <td className="py-3 pr-4 font-semibold text-primary">
-                          ₹{cc.annual_fees.toLocaleString('en-IN')}
+                          ₹{cc.annual_fee_inr.toLocaleString('en-IN')}
                         </td>
-                        <td className="py-3 pr-4 text-text-secondary">{cc.seats}</td>
+                        <td className="py-3 pr-4 text-text-secondary">{cc.seats ?? '—'}</td>
                         <td className="py-3">
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                            cc.admission_type === 'CET'
+                            cc.admission_type === 'cet_only'
                               ? 'bg-warning/15 text-warning'
                               : 'bg-success/15 text-success'
                           }`}>
-                            {cc.admission_type}
+                            {cc.admission_type === 'cet_only' ? 'IMU CET' : cc.admission_type === 'both' ? 'CET / Direct' : cc.admission_type === 'own_exam' ? 'Own Exam' : 'Direct'}
                           </span>
                         </td>
                       </tr>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { STATIC_COLLEGES } from '@/lib/static-data'
-import { Shield, CheckCircle, AlertTriangle, XCircle, ExternalLink, Anchor } from 'lucide-react'
+import { Shield, CheckCircle, AlertTriangle, XCircle, ExternalLink, ShipWheel } from 'lucide-react'
 
 export async function generateStaticParams() {
   return STATIC_COLLEGES.map((c) => ({ college: c.slug }))
@@ -56,7 +56,7 @@ export default function VerifyCollegePage({ params }: { params: { college: strin
       {/* Header */}
       <header className="bg-white border-b border-border py-4 px-4 flex items-center justify-center">
         <Link href="/" className="flex items-center gap-2">
-          <Anchor className="w-5 h-5 text-accent" />
+          <ShipWheel className="w-5 h-5 text-accent" />
           <span className="font-display font-semibold text-primary">Maritime AI Guide</span>
         </Link>
       </header>
@@ -119,7 +119,7 @@ export default function VerifyCollegePage({ params }: { params: { college: strin
               View Full College Profile
             </Link>
             <a
-              href="https://dgshipping.gov.in"
+              href="https://dgma.gov.in"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full border border-border text-text-secondary font-medium py-3 rounded-xl hover:bg-surface transition text-sm"
