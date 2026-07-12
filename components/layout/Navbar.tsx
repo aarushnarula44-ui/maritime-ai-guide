@@ -7,7 +7,6 @@ import { Anchor, Menu, X, ChevronDown, LogOut, User, Settings, LayoutDashboard, 
 import { createClient } from '@/lib/supabase/client'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { GlobalSearch } from '@/components/layout/GlobalSearch'
-import { NotificationBell } from '@/components/notifications/NotificationBell'
 
 const NAV_LINKS = [
   { href: '/eligibility', label: 'Check Eligibility' },
@@ -126,7 +125,6 @@ export default function Navbar() {
               Ask NavAI
             </Link>
 
-            {user && <NotificationBell />}
             {user ? (
               <div className="relative">
                 <button
