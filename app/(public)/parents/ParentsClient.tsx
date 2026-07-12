@@ -32,9 +32,9 @@ const FAQS = [
 ]
 
 const COMPANIES = [
-  'Maersk', 'Anglo-Eastern', 'Bernhard Schulte', 'Columbia Shipmanagement',
+  'Maersk', 'Anglo-Eastern', 'Bernhard Schulte',
   'V.Ships', 'Wallem Group', 'Synergy Marine', 'Fleet Management',
-  'MOL', 'NYK Line', 'Shipping Corporation of India', 'Great Eastern Shipping',
+  'MOL', 'NYK Line', 'Great Eastern Shipping', 'Scorpio Shipping',
 ]
 
 const CHECKLIST = [
