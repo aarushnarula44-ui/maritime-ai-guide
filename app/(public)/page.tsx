@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { ArrowRight, Shield, Zap, Trophy, ChevronRight } from 'lucide-react'
 import { CourseCard } from '@/components/courses/CourseCard'
 import { STATIC_COURSES } from '@/lib/static-data'
+import OceanIntro from '@/components/intro/OceanIntro'
+import OceanAmbience from '@/components/ocean/OceanAmbience'
 
 
 const PROBLEMS = [
@@ -47,8 +49,11 @@ export default function LandingPage() {
 
   return (
     <>
+      <OceanIntro />
       {/* HERO */}
       <section className="relative min-h-screen bg-gradient-to-br from-primary via-primary-light to-[#0D2444] flex items-center overflow-hidden">
+        {/* Living ocean layer */}
+        <OceanAmbience />
         {/* Decorative blobs */}
         <div className="absolute top-20 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-64 h-64 bg-blue-500/10 rounded-full blur-2xl" />
@@ -69,7 +74,7 @@ export default function LandingPage() {
 
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-3 md:mb-4">
               Your Merchant Navy Career{' '}
-              <span className="text-accent">Starts Here.</span>
+              <span className="text-ocean">Starts Here.</span>
             </h1>
 
             <p className="text-blue-200 text-lg md:text-xl mb-4 md:mb-8 leading-relaxed">
@@ -98,7 +103,7 @@ export default function LandingPage() {
 
           {/* Ship illustration */}
           <div className="hidden md:flex items-center justify-center">
-            <div className="relative animate-wave">
+            <div className="relative animate-ship-bob">
               <svg viewBox="0 0 400 300" className="w-full max-w-md" fill="none">
                 {/* Ocean waves */}
                 <ellipse cx="200" cy="250" rx="190" ry="30" fill="#00D4FF" opacity="0.15"/>
