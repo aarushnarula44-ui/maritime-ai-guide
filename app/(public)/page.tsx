@@ -140,26 +140,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* STATS BAR */}
-      <section className="bg-white py-6 border-b border-border">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-6 md:gap-0 overflow-x-auto md:justify-around">
-            {[
-              { num: '47,000+', label: 'Students Guided' },
-              { num: '8', label: 'Career Paths' },
-              { num: '200+', label: 'Colleges Listed' },
-              { num: '100%', label: 'DGS Accurate' },
-              { num: 'Free', label: 'to Start' },
-            ].map((s) => (
-              <div key={s.label} className="flex-shrink-0 text-center px-6 md:px-0">
-                <p className="font-display text-2xl font-bold text-accent">{s.num}</p>
-                <p className="text-text-muted text-sm">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* PROBLEM CARDS */}
       <section className="bg-surface py-16">
         <div className="max-w-7xl mx-auto px-4">
@@ -331,7 +311,6 @@ export default function LandingPage() {
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
             Your Dream Maritime Career Is Closer Than You Think.
           </h2>
-          <p className="text-blue-200 mb-8">Join 47,000+ students already using Maritime AI Guide.</p>
           <Link
             href="/signup"
             className="inline-flex items-center gap-2 bg-accent text-primary font-bold py-4 px-10 rounded-full hover:bg-accent-dark transition text-lg"
