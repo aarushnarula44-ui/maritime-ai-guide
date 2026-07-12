@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { href: '/eligibility', label: 'Check Eligibility' },
   { href: '/courses', label: 'Courses' },
   { href: '/colleges', label: 'Colleges' },
-  { href: '/cet', label: 'CET Prep' },
+  { href: '/parents', label: 'For Parents' },
   { href: '/salary', label: 'Salaries' },
 ]
 
@@ -21,7 +21,7 @@ const RESOURCES_LINKS = [
   { href: '/roadmap', label: 'Career Roadmap' },
   { href: '/medical', label: 'Medical Requirements' },
   { href: '/fraud-protection', label: 'Fraud Protection' },
-  { href: '/parents', label: 'For Parents' },
+  { href: '/cet', label: 'CET Prep' },
 ]
 
 export default function Navbar() {
