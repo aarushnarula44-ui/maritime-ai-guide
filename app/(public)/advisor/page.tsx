@@ -49,10 +49,21 @@ export default function AdvisorPage() {
   const [language, setLanguage] = useState<'en' | 'hi'>('en')
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const shouldAutoScrollRef = useRef(true)
   const router = useRouter()
 
+  function handleMessagesScroll() {
+    const el = scrollContainerRef.current
+    if (!el) return
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+    shouldAutoScrollRef.current = distanceFromBottom < 80
+  }
+
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (shouldAutoScrollRef.current) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   useEffect(() => {
@@ -74,6 +85,7 @@ export default function AdvisorPage() {
   const sendMessage = useCallback(async (text?: string) => {
     const msg = (text ?? input).trim()
     if (!msg || loading) return
+    shouldAutoScrollRef.current = true
     setInput('')
     setLoading(true)
 
@@ -106,31 +118,27 @@ export default function AdvisorPage() {
             const event = JSON.parse(line.slice(6))
             if (event.type === 'chunk') {
               setMessages((prev) => {
-                const updated = [...prev]
-                const last = updated[updated.length - 1]
-                if (last?.role === 'assistant') last.content += event.content
-                return updated
+                const last = prev[prev.length - 1]
+                if (last?.role !== 'assistant') return prev
+                return [...prev.slice(0, -1), { ...last, content: last.content + event.content }]
               })
             } else if (event.type === 'citation') {
               setMessages((prev) => {
-                const updated = [...prev]
-                const last = updated[updated.length - 1]
-                if (last?.role === 'assistant') last.citations = [...(last.citations ?? []), event.source]
-                return updated
+                const last = prev[prev.length - 1]
+                if (last?.role !== 'assistant') return prev
+                return [...prev.slice(0, -1), { ...last, citations: [...(last.citations ?? []), event.source] }]
               })
             } else if (event.type === 'done') {
               setMessages((prev) => {
-                const updated = [...prev]
-                const last = updated[updated.length - 1]
-                if (last?.role === 'assistant') last.isStreaming = false
-                return updated
+                const last = prev[prev.length - 1]
+                if (last?.role !== 'assistant') return prev
+                return [...prev.slice(0, -1), { ...last, isStreaming: false }]
               })
             } else if (event.type === 'error') {
               setMessages((prev) => {
-                const updated = [...prev]
-                const last = updated[updated.length - 1]
-                if (last?.role === 'assistant') { last.content = event.message; last.isStreaming = false }
-                return updated
+                const last = prev[prev.length - 1]
+                if (last?.role !== 'assistant') return prev
+                return [...prev.slice(0, -1), { ...last, content: event.message, isStreaming: false }]
               })
             }
           } catch { /* malformed SSE */ }
@@ -138,10 +146,9 @@ export default function AdvisorPage() {
       }
     } catch {
       setMessages((prev) => {
-        const updated = [...prev]
-        const last = updated[updated.length - 1]
-        if (last?.role === 'assistant') { last.content = 'Something went wrong. Please try again.'; last.isStreaming = false }
-        return updated
+        const last = prev[prev.length - 1]
+        if (last?.role !== 'assistant') return prev
+        return [...prev.slice(0, -1), { ...last, content: 'Something went wrong. Please try again.', isStreaming: false }]
       })
     } finally {
       setLoading(false)
@@ -239,7 +246,7 @@ export default function AdvisorPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+        <div ref={scrollContainerRef} onScroll={handleMessagesScroll} className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center text-center pt-6 pb-4">
               <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
