@@ -338,7 +338,7 @@ export default function AdvisorPage() {
             <p className="text-xs text-warning mt-1">{input.length}/500 characters</p>
           )}
           <p className="text-xs text-text-muted mt-2 text-center">
-            NavAI answers based on official DGS guidelines. Always verify critical decisions with official sources.
+            NavAI is an AI and it can make mistakes. Please double check your responses with the official DGS guidelines.
           </p>
         </div>
       </div>
